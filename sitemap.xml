@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://berknazlim.com/</loc></url>
-  <url><loc>https://berknazlim.com/portfolio.html</loc></url>
-  <url><loc>https://berknazlim.com/services.html</loc></url>
-  <url><loc>https://berknazlim.com/about.html</loc></url>
-  <url><loc>https://berknazlim.com/journal.html</loc></url>
-  <url><loc>https://berknazlim.com/contact.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://berknazlim.com/</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/"/></url>
+  <url><loc>https://berknazlim.com/tr/</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/"/></url>
+  <url><loc>https://berknazlim.com/portfolio.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/portfolio.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/portfolio.html"/></url>
+  <url><loc>https://berknazlim.com/tr/portfolio.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/portfolio.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/portfolio.html"/></url>
+  <url><loc>https://berknazlim.com/services.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/services.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/services.html"/></url>
+  <url><loc>https://berknazlim.com/tr/services.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/services.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/services.html"/></url>
+  <url><loc>https://berknazlim.com/about.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/about.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/about.html"/></url>
+  <url><loc>https://berknazlim.com/tr/about.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/about.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/about.html"/></url>
+  <url><loc>https://berknazlim.com/journal.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/journal.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/journal.html"/></url>
+  <url><loc>https://berknazlim.com/tr/journal.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/journal.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/journal.html"/></url>
+  <url><loc>https://berknazlim.com/contact.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/contact.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/contact.html"/></url>
+  <url><loc>https://berknazlim.com/tr/contact.html</loc><xhtml:link rel="alternate" hreflang="en" href="https://berknazlim.com/contact.html"/><xhtml:link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/contact.html"/></url>
 </urlset>
