@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
-<script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;}catch(e){}})();</script>
+<script>(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(!window.__siteReady)d.classList.add('no-reveal');},2500);try{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;}catch(e){}})();</script>
 <link rel="canonical" href="https://berknazlim.com/tr/project.html">
 <link rel="alternate" hreflang="en" href="https://berknazlim.com/project.html">
 <link rel="alternate" hreflang="tr" href="https://berknazlim.com/tr/project.html">
@@ -21,12 +21,15 @@
 <meta property="og:locale" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body data-page="project">
+<a class="skip" href="#main">İçeriğe geç</a>
 <header class="site-header">
   <nav class="nav wrap" aria-label="Menü">
     <a class="brand" href="index.html" aria-label="Berk Nazlım, ana sayfa"><svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="1" y="1" width="38" height="38" stroke="currentColor" stroke-width="1.5"/><path d="M10 31V9h20v22M10 20h20M20 9v22" stroke="currentColor" stroke-width="1.5"/></svg><span><span class="brand-name">Berk Nazlım</span><small>Mimarlık</small></span></a>
@@ -45,7 +48,7 @@
   <ul><li><a href="index.html">Ana sayfa<span>01</span></a></li><li><a href="portfolio.html">Projeler<span>02</span></a></li><li><a href="services.html">Hizmetler<span>03</span></a></li><li><a href="about.html">Hakkında<span>04</span></a></li><li><a href="journal.html">Günlük<span>05</span></a></li><li><a href="contact.html">İletişim<span>06</span></a></li></ul>
   <div class="mm-foot"><a href="mailto:hello@berknazlim.com">hello@berknazlim.com</a><br>İstanbul, Türkiye</div>
 </div>
-<main>
+<main id="main">
 <div id="project"></div>
 </main>
 <footer class="site-footer">

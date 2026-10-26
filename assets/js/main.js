@@ -50,7 +50,11 @@
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
   const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
   const themeBtn = $(".theme-toggle");
-  const labelTheme = () => themeBtn && themeBtn.setAttribute("aria-label", current() === "dark" ? UI.toLight : UI.toDark);
+  const labelTheme = () => {
+    if (themeBtn) themeBtn.setAttribute("aria-label", current() === "dark" ? UI.toLight : UI.toDark);
+    // keep the phone's browser bar in step with a manually chosen theme
+    $$('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", current() === "dark" ? "#141413" : "#f3f1ec"));
+  };
   if (themeBtn) {
     labelTheme();
     themeBtn.addEventListener("click", () => {
@@ -100,6 +104,19 @@
   const projectUrl = (p) => `project.html?p=${encodeURIComponent(p.slug)}`;
   const postUrl = (p) => `post.html?p=${encodeURIComponent(p.slug)}`;
 
+  // project.html and post.html serve every item, so point their search/share tags at this item
+  function setMeta(title, desc, slug) {
+    document.title = `${title} — Berk Nazlım`;
+    const q = "?p=" + encodeURIComponent(slug);
+    $$('link[rel="canonical"], link[rel="alternate"], meta[property="og:url"]').forEach((el) => {
+      const attr = el.tagName === "META" ? "content" : "href";
+      el.setAttribute(attr, el.getAttribute(attr).split("?")[0] + q);
+    });
+    $$('meta[name="description"], meta[property="og:description"]').forEach((m) => m.setAttribute("content", desc));
+    const ogt = $('meta[property="og:title"]');
+    if (ogt) ogt.setAttribute("content", document.title);
+  }
+
   function projectCard(p, i, cls) {
     return `<a class="project-card reveal ${cls || ""}" href="${projectUrl(p)}">
       ${media(p, 0)}
@@ -127,7 +144,7 @@
     const cats = [UI.all, ...new Set(projects.map((p) => p.category))];
     const count = (c) => (c === UI.all ? projects.length : projects.filter((p) => p.category === c).length);
     filters.innerHTML = cats.map((c, i) => `<button type="button" class="filter ${i ? "" : "active"}" data-cat="${esc(c)}" aria-pressed="${!i}">${esc(c)}<sup>${pad(count(c))}</sup></button>`).join("");
-    const layout = ["wide", "", "", "narrow", "", "", "", ""];
+    const layout = ["wide", "", "", "narrow", "", "", "", "wide"];
     const draw = (cat) => {
       const all = cat === UI.all;
       grid.innerHTML = projects.filter((p) => all || p.category === cat).map((p, i) => projectCard(p, i, all ? layout[i % layout.length] : "")).join("");
@@ -147,9 +164,10 @@
 
   if (page === "project") {
     const slug = new URLSearchParams(location.search).get("p");
-    const i = Math.max(0, projects.findIndex((p) => p.slug === slug));
+    const i = projects.findIndex((p) => p.slug === slug);
+    if (i < 0) { location.replace("portfolio.html"); return; }
     const p = projects[i], next = projects[(i + 1) % projects.length];
-    document.title = `${p.title} — Berk Nazlım`;
+    setMeta(p.title, p.summary, p.slug);
     $("#project").innerHTML = `
       <section class="pd-head"><div class="wrap">
         <span class="label">${esc(p.category)} · ${esc(p.year)}</span>
@@ -206,9 +224,10 @@
 
   if (page === "post") {
     const slug = new URLSearchParams(location.search).get("p");
-    const i = Math.max(0, posts.findIndex((p) => p.slug === slug));
+    const i = posts.findIndex((p) => p.slug === slug);
+    if (i < 0) { location.replace("journal.html"); return; }
     const p = posts[i], newer = posts[i - 1], older = posts[i + 1];
-    document.title = `${p.title} — Berk Nazlım`;
+    setMeta(p.title, p.excerpt, p.slug);
     $("#post").innerHTML = `
       <section class="article-head"><div class="wrap"><div class="article">
         <a class="back" href="journal.html">← ${UI.back}</a>
@@ -256,4 +275,5 @@
     $$(".reveal:not(.in)").forEach((el) => io.observe(el));
   }
   observe();
+  window.__siteReady = true;
 })();

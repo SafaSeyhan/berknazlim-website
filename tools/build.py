@@ -21,6 +21,7 @@ S = {
         "tagline": "Architecture",
         "home_aria": "Berk Nazlım, home",
         "menu": "Menu",
+        "skip": "Skip to content",
         "theme": "Switch light or dark mode",
         "cta_nav": "Start a project",
         "cta_label": "Have a project in mind?",
@@ -37,6 +38,7 @@ S = {
         "tagline": "Mimarlık",
         "home_aria": "Berk Nazlım, ana sayfa",
         "menu": "Menü",
+        "skip": "İçeriğe geç",
         "theme": "Açık veya koyu temaya geç",
         "cta_nav": "Proje başlat",
         "cta_label": "Aklınızda bir proje mi var?",
@@ -64,6 +66,22 @@ def url(lang, page):
     return f"{DOMAIN}/{'tr/' if lang == 'tr' else ''}{path}"
 
 
+def jsonld(lang):
+    import json
+    data = {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Berk Nazlım " + ("Mimarlık" if lang == "tr" else "Architecture"),
+        "url": url(lang, "index.html"),
+        "image": DOMAIN + "/assets/og.png",
+        "email": "hello@berknazlim.com",
+        "address": {"@type": "PostalAddress", "addressLocality": "İstanbul" if lang == "tr" else "Istanbul", "addressCountry": "TR"},
+        "founder": {"@type": "Person", "name": "Berk Nazlım", "jobTitle": "Mimar" if lang == "tr" else "Architect",
+                    "alumniOf": {"@type": "CollegeOrUniversity", "name": "İstanbul Teknik Üniversitesi" if lang == "tr" else "Istanbul Technical University"}},
+    }
+    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
+
+
 def head(lang, page, title, desc):
     r = "../" if lang == "tr" else ""
     # On the English pages, visitors whose browser is set to Turkish are sent to the Turkish
@@ -82,7 +100,7 @@ def head(lang, page, title, desc):
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
-<script>(function(){{var d=document.documentElement;d.classList.add('js');try{{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;{redirect}}}catch(e){{}}}})();</script>
+<script>(function(){{var d=document.documentElement;d.classList.add('js');setTimeout(function(){{if(!window.__siteReady)d.classList.add('no-reveal');}},2500);try{{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;{redirect}}}catch(e){{}}}})();</script>
 <link rel="canonical" href="{url(lang, page)}">
 <link rel="alternate" hreflang="en" href="{url('en', page)}">
 <link rel="alternate" hreflang="tr" href="{url('tr', page)}">
@@ -95,6 +113,8 @@ def head(lang, page, title, desc):
 <meta property="og:locale" content="{'tr_TR' if lang == 'tr' else 'en_GB'}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{r}favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{r}apple-touch-icon.png">
+{jsonld(lang) if page == "index.html" else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -169,7 +189,8 @@ def scripts(lang):
 
 
 def write(lang, page, title, desc, slug, body, with_cta=True):
-    html = (head(lang, page, title, desc) + f'<body data-page="{slug}">\n' + header(lang, page) + "<main>\n"
+    html = (head(lang, page, title, desc) + f'<body data-page="{slug}">\n<a class="skip" href="#main">{S[lang]["skip"]}</a>\n'
+            + header(lang, page) + '<main id="main">\n'
             + body + (cta(lang) if with_cta else "") + "</main>\n" + footer(lang) + scripts(lang))
     out = os.path.join(ROOT, "tr" if lang == "tr" else "", page)
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -598,7 +619,9 @@ for lang in ("en", "tr"):
 # 404 page (GitHub Pages serves it for any unknown URL, so links are absolute)
 nf = head("en", "index.html", "Page not found — Berk Nazlım", "Page not found.").replace(
     "if(!localStorage", "if(false&&!localStorage")
-nf = nf.replace('href="favicon', 'href="/favicon').replace('href="assets/', 'href="/assets/')
+nf = nf.replace('href="favicon', 'href="/favicon').replace('href="assets/', 'href="/assets/').replace('href="apple-touch', 'href="/apple-touch')
+nf = "\n".join(l for l in nf.split("\n") if not l.startswith(('<link rel="canonical"', '<link rel="alternate"', '<script type="application/ld+json"', '<meta property="og:url"')))
+nf = nf.replace('<meta name="color-scheme"', '<meta name="robots" content="noindex">\n<meta name="color-scheme"')
 nf += '''<body data-page="404"><main><section class="notfound"><div class="wrap">
   <h1>404</h1>
   <p class="lead" style="margin:0 auto 12px">This page hasn't been built yet.</p>
@@ -616,6 +639,16 @@ with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as fh:
             fh.write(f'  <url><loc>{url(lang, page)}</loc>'
                      f'<xhtml:link rel="alternate" hreflang="en" href="{url("en", page)}"/>'
                      f'<xhtml:link rel="alternate" hreflang="tr" href="{url("tr", page)}"/></url>\n')
+    import re
+    data = open(os.path.join(ROOT, "assets", "js", "data.js"), encoding="utf-8").read()
+    projects_js, posts_js = data.split("window.POSTS")
+    for page, block in (("project.html", projects_js), ("post.html", posts_js)):
+        for slug in re.findall(r'^    slug: "([^"]+)"', block, re.M):
+            for lang in ("en", "tr"):
+                q = "?p=" + slug
+                fh.write(f'  <url><loc>{url(lang, page)}{q}</loc>'
+                         f'<xhtml:link rel="alternate" hreflang="en" href="{url("en", page)}{q}"/>'
+                         f'<xhtml:link rel="alternate" hreflang="tr" href="{url("tr", page)}{q}"/></url>\n')
     fh.write("</urlset>\n")
 
 print("Built", len(PAGES) * 2 + 1, "pages")

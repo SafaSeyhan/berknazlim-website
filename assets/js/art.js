@@ -198,19 +198,21 @@
       axes += line(x, 80, x, G, "s", 'stroke-width="0.6" stroke-dasharray="14 6 2 6" opacity="0.35"');
       axes += `<circle cx="${x}" cy="56" r="20" class="fb" stroke-width="1"/><text x="${x}" y="63" text-anchor="middle" class="t">${letters[i]}</text>`;
     }
-    // level markers
+    // level markers and scale bar sit inside the area every card crop keeps visible;
+    // the zoomed-in variants (1, 3) leave them out because they would be cut off
+    const annotate = variant % 2 === 0;
     let lv = "";
-    for (const [y, m] of res.levels) {
-      lv += line(1440, y, 1560, y, "s", 'stroke-width="0.8"') + poly([[1470, y], [1460, y - 12], [1480, y - 12]], "ink") + `<text x="1488" y="${f(y - 8)}" class="t">+${m.toFixed(2)}</text>`;
+    if (annotate) {
+      for (const [y, m] of res.levels) {
+        lv += line(1290, y, 1420, y, "s", 'stroke-width="0.8"') + poly([[1310, y], [1300, y - 12], [1320, y - 12]], "ink") + `<text x="1330" y="${f(y - 8)}" class="t">+${m.toFixed(2)}</text>`;
+      }
     }
     // ground: section hatch below the ground line
     const ground = res.noGround ? "" :
       `<rect x="-200" y="${G}" width="2000" height="400" fill="url(#${id})"/>` + line(-200, G, 1800, G, "s", 'stroke-width="3"');
-    // scale bar + north arrow
-    const scale = `<g transform="translate(60 ${H - 60})"><rect x="-10" y="-34" width="300" height="52" class="fb" stroke="none"/>` +
+    const scale = !annotate ? "" : `<g transform="translate(430 815)"><rect x="-10" y="-30" width="300" height="48" class="bg"/>` +
       [0, 1, 2, 3].map((k) => `<rect x="${k * 60}" y="0" width="60" height="10" class="${k % 2 ? "fb" : "ink"}" stroke-width="1"/>`).join("") +
-      `<text x="0" y="-8" class="t">0</text><text x="112" y="-8" class="t">10</text><text x="226" y="-8" class="t">20 m</text></g>` +
-      `<g transform="translate(${W - 80} ${H - 80})"><circle r="34" class="fb" stroke-width="1"/>${poly([[0, -30], [10, 14], [0, 6], [-10, 14]], "ink")}<text y="-42" text-anchor="middle" class="t">N</text></g>`;
+      `<text x="0" y="-8" class="t">0</text><text x="112" y="-8" class="t">10</text><text x="226" y="-8" class="t">20 m</text></g>`;
 
     return `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="${views[variant % views.length]}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
 <defs><pattern id="${id}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="18" class="s" stroke-width="1" opacity="0.5"/></pattern></defs>
