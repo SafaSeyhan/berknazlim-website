@@ -227,6 +227,9 @@ a:hover .media > svg, a:hover .media > img { transform: scale(1.025); }
   a:hover .media.drawn > img { opacity: 1; }
   a:hover .media.drawn > .sketch { opacity: 0; }
 }
+/* touch screens: main.js adds .photo once the whole image is on screen */
+.media.drawn.photo > img { opacity: 1; transition-duration: 1.2s; }
+.media.drawn.photo > .sketch { opacity: 0; transition-duration: 1.2s; }
 figure { margin: 0; }
 figcaption { display: flex; justify-content: space-between; gap: 16px; padding-top: 12px; color: var(--muted); font-size: 14px; }
 

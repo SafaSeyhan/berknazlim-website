@@ -287,5 +287,18 @@
     $$(".reveal:not(.in)").forEach((el) => io.observe(el));
   }
   observe();
+
+  /* ---------- Drawings: on touch screens, turn into the photo once fully in view ---------- */
+  const drawn = $$(".media.drawn");
+  if (drawn.length && "IntersectionObserver" in window && !matchMedia("(hover: hover)").matches) {
+    const dio = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        // show the photo when (almost) the whole image is visible, back to the drawing once it has left the screen
+        if (en.intersectionRatio >= 0.9) en.target.classList.add("photo");
+        else if (!en.isIntersecting) en.target.classList.remove("photo");
+      });
+    }, { threshold: [0, 0.9] });
+    drawn.forEach((el) => dio.observe(el));
+  }
   window.__siteReady = true;
 })();
