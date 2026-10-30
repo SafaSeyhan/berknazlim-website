@@ -101,6 +101,7 @@ def head(lang, page, title, desc):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<meta name="google-site-verification" content="ng8IBVjsUk1MznbtXwQrq5oEJaAVr4SV7g_3YMehIEM">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
