@@ -217,6 +217,16 @@ p { margin: 0 0 1em; }
 .media { position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--art-bg); }
 .media > svg, .media > img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
 a:hover .media > svg, a:hover .media > img { transform: scale(1.025); }
+/* photos redrawn as line drawings (home page); lines and hatching follow the theme */
+.media.drawn > img { position: absolute; inset: 0; opacity: 0; transition: opacity .7s var(--ease), transform 1s var(--ease); }
+.sketch { position: absolute; inset: 0; transition: opacity .7s var(--ease); }
+.sketch i { position: absolute; inset: 0; -webkit-mask: var(--m) center / cover no-repeat; mask: var(--m) center / cover no-repeat; }
+.sketch .tone { --m: var(--tone); background: var(--accent); opacity: .5; }
+.sketch .line { --m: var(--line); background: var(--ink); }
+@media (hover: hover) {
+  a:hover .media.drawn > img { opacity: 1; }
+  a:hover .media.drawn > .sketch { opacity: 0; }
+}
 figure { margin: 0; }
 figcaption { display: flex; justify-content: space-between; gap: 16px; padding-top: 12px; color: var(--muted); font-size: 14px; }
 

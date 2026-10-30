@@ -45,6 +45,14 @@
     const set = /\/projects\//.test(path) ? ` srcset="${esc(src(small(path)))} 800w, ${esc(s)} 1600w" sizes="${sizes || "100vw"}"` : "";
     return `<img src="${esc(s)}"${set} alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
   }
+  // home page: the photo drawn as a line drawing (NN-line.webp + NN-tone.webp masks from tools/sketch.py),
+  // coloured by the theme like the journal illustrations; the photo shows through on hover
+  function drawing(path, alt, sizes, eager) {
+    // absolute URL: a relative url() inside a custom property would resolve against style.css
+    const m = (k) => `url('${new URL(src(path.replace(/\.jpe?g$/i, `-${k}.webp`)), location.href).href}')`;
+    return `<div class="sketch" role="img" aria-label="${esc(alt)}" style="--tone:${m("tone")};--line:${m("line")}"><i class="tone"></i><i class="line"></i></div>`
+      + picture(path, "", sizes, eager).replace("<img ", '<img aria-hidden="true" ');
+  }
   function media(item, variant, cls, sizes, eager) {
     const img = variant === 0 ? item.image : item.gallery && item.gallery[variant - 1];
     const inner = img ? picture(img.src || img, item.title, sizes, eager) : ART.render(item.form, item.slug, variant);
@@ -122,10 +130,10 @@
     if (ogt) ogt.setAttribute("content", document.title);
   }
 
-  function projectCard(p, i, cls) {
+  function projectCard(p, i, cls, drawn) {
     const sizes = cls === "wide" ? "(max-width: 820px) 100vw, 1300px" : "(max-width: 820px) 100vw, 50vw";
     return `<a class="project-card reveal ${cls || ""}" href="${projectUrl(p)}">
-      ${media(p, 0, "", sizes)}
+      ${drawn && p.image ? `<div class="media drawn">${drawing(p.image, p.title, sizes)}</div>` : media(p, 0, "", sizes)}
       <div class="project-info"><span class="n mono">${pad(i + 1)}</span><h3>${esc(p.title)}</h3><span class="meta">${esc(p.year || "")}</span></div>
       <div class="project-sub">${esc(p.location)} · ${esc(p.category)}</div></a>`;
   }
@@ -139,9 +147,9 @@
 
   if (page === "home") {
     const hero = $("#hero-art"), lead = projects.find((p) => p.hero) || projects[0];
-    if (hero && lead) hero.innerHTML = picture(lead.hero || lead.image, lead.title, "100vw", true);
+    if (hero && lead) { hero.classList.add("drawn"); hero.innerHTML = drawing(lead.hero || lead.image, lead.title, "100vw"); }
     const feat = projects.filter((p) => p.featured).slice(0, 3);
-    $("#featured").innerHTML = feat.map((p, i) => projectCard(p, i, ["wide", "narrow", ""][i])).join("");
+    $("#featured").innerHTML = feat.map((p, i) => projectCard(p, i, ["wide", "narrow", ""][i], true)).join("");
     $("#latest-posts").innerHTML = posts.slice(0, 3).map(postCard).join("");
   }
 
