@@ -293,11 +293,10 @@
   if (drawn.length && "IntersectionObserver" in window && !matchMedia("(hover: hover)").matches) {
     const dio = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
-        // show the photo when (almost) the whole image is visible, back to the drawing once it has left the screen
-        if (en.intersectionRatio >= 0.9) en.target.classList.add("photo");
-        else if (!en.isIntersecting) en.target.classList.remove("photo");
+        // photo only while the whole image is on screen; drawing as soon as any part is cut off
+        en.target.classList.toggle("photo", en.intersectionRatio >= 0.98);
       });
-    }, { threshold: [0, 0.9] });
+    }, { threshold: [0, 0.98] });
     drawn.forEach((el) => dio.observe(el));
   }
   window.__siteReady = true;
