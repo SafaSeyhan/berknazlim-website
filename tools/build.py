@@ -11,6 +11,7 @@ import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = "https://berknazlim.com"
+LINKEDIN = "https://www.linkedin.com/in/berk-nazl%C4%B1m-11b173279"
 PAGES = ["index.html", "portfolio.html", "project.html", "services.html", "about.html",
          "journal.html", "post.html", "contact.html"]
 
@@ -18,7 +19,7 @@ S = {
     "en": {
         "nav": [("index.html", "Home"), ("portfolio.html", "Portfolio"), ("services.html", "Services"),
                 ("about.html", "About"), ("journal.html", "Journal"), ("contact.html", "Contact")],
-        "tagline": "Architecture",
+        "tagline": "Interior Architecture",
         "home_aria": "Berk Nazlım, home",
         "menu": "Menu",
         "skip": "Skip to content",
@@ -27,15 +28,15 @@ S = {
         "cta_label": "Have a project in mind?",
         "cta_title": "Let's design something <em>lasting</em> together.",
         "cta_btn": "Get in touch",
-        "f_about": "Architecture, interiors and urban design from Istanbul.",
-        "f_studio": "Studio", "f_contact": "Contact", "f_follow": "Follow",
+        "f_about": "Interior architecture and design from Istanbul.",
+        "f_studio": "Pages", "f_contact": "Contact", "f_follow": "Follow",
         "f_start": "Start a project", "city": "Istanbul, Türkiye",
-        "rights": "Berk Nazlım Architecture",
+        "rights": "Berk Nazlım",
     },
     "tr": {
         "nav": [("index.html", "Ana sayfa"), ("portfolio.html", "Projeler"), ("services.html", "Hizmetler"),
                 ("about.html", "Hakkında"), ("journal.html", "Günlük"), ("contact.html", "İletişim")],
-        "tagline": "Mimarlık",
+        "tagline": "İç Mimarlık",
         "home_aria": "Berk Nazlım, ana sayfa",
         "menu": "Menü",
         "skip": "İçeriğe geç",
@@ -44,10 +45,10 @@ S = {
         "cta_label": "Aklınızda bir proje mi var?",
         "cta_title": "Birlikte <em>kalıcı</em> bir şey tasarlayalım.",
         "cta_btn": "İletişime geçin",
-        "f_about": "İstanbul'dan mimarlık, iç mimarlık ve kentsel tasarım.",
-        "f_studio": "Stüdyo", "f_contact": "İletişim", "f_follow": "Takip edin",
+        "f_about": "İstanbul'dan iç mimarlık ve tasarım.",
+        "f_studio": "Sayfalar", "f_contact": "İletişim", "f_follow": "Takip edin",
         "f_start": "Proje başlat", "city": "İstanbul, Türkiye",
-        "rights": "Berk Nazlım Mimarlık",
+        "rights": "Berk Nazlım",
     },
 }
 
@@ -71,12 +72,12 @@ def jsonld(lang):
     data = {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
-        "name": "Berk Nazlım " + ("Mimarlık" if lang == "tr" else "Architecture"),
+        "name": "Berk Nazlım " + ("İç Mimarlık" if lang == "tr" else "Interior Architecture"),
         "url": url(lang, "index.html"),
         "image": DOMAIN + "/assets/og.png",
-        "email": "hello@berknazlim.com",
+        "email": "nazlimberk@gmail.com",
         "address": {"@type": "PostalAddress", "addressLocality": "İstanbul" if lang == "tr" else "Istanbul", "addressCountry": "TR"},
-        "founder": {"@type": "Person", "name": "Berk Nazlım", "jobTitle": "Mimar" if lang == "tr" else "Architect",
+        "founder": {"@type": "Person", "name": "Berk Nazlım", "jobTitle": "İç Mimar" if lang == "tr" else "Interior Architect", "sameAs": [LINKEDIN],
                     "alumniOf": {"@type": "CollegeOrUniversity", "name": "İstanbul Teknik Üniversitesi" if lang == "tr" else "Istanbul Technical University"}},
     }
     return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
@@ -147,7 +148,7 @@ def header(lang, page):
 </header>
 <div class="mobile-menu" id="mobile-menu">
   <ul>{mlinks}</ul>
-  <div class="mm-foot"><a href="mailto:hello@berknazlim.com">hello@berknazlim.com</a><br>{s["city"]}</div>
+  <div class="mm-foot"><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a><br>{s["city"]}</div>
 </div>
 '''
 
@@ -169,8 +170,8 @@ def footer(lang):
     <div class="footer-grid">
       <div><a class="brand" href="index.html">{LOGO}<span><span class="brand-name">Berk Nazlım</span><small>{s["tagline"]}</small></span></a><p>{s["f_about"]}</p></div>
       <div><h5>{s["f_studio"]}</h5><ul><li><a href="portfolio.html">{nav["portfolio.html"]}</a></li><li><a href="services.html">{nav["services.html"]}</a></li><li><a href="about.html">{nav["about.html"]}</a></li><li><a href="journal.html">{nav["journal.html"]}</a></li></ul></div>
-      <div><h5>{s["f_contact"]}</h5><ul><li><a href="mailto:hello@berknazlim.com">hello@berknazlim.com</a></li><li>{s["city"]}</li><li><a href="contact.html">{s["f_start"]}</a></li></ul></div>
-      <div><h5>{s["f_follow"]}</h5><ul><li><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://www.behance.net/" target="_blank" rel="noopener">Behance</a></li></ul></div>
+      <div><h5>{s["f_contact"]}</h5><ul><li><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a></li><li>{s["city"]}</li><li><a href="contact.html">{s["f_start"]}</a></li></ul></div>
+      <div><h5>{s["f_follow"]}</h5><ul><li><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
     </div>
     <div class="footer-bottom mono"><span>© <span id="year">2026</span> {s["rights"]}</span><span>41.0082° N, 28.9784° E</span><span>berknazlim.com</span></div>
   </div>
@@ -206,26 +207,26 @@ def home(lang):
     if lang == "en":
         return '''<section class="hero"><div class="wrap">
   <div class="hero-top">
-    <div><span class="label">Architecture · Interiors · Urban design — Istanbul</span>
-    <h1>Architecture rooted in place, <em>designed</em> for the century ahead.</h1></div>
-    <div class="hero-side"><p>Berk Nazlım is an Istanbul-based architect and a graduate of Istanbul Technical University, designing cultural, residential and mixed-use buildings.</p>
+    <div><span class="label">Interior architecture · Design — Istanbul</span>
+    <h1>Spaces shaped by <em>material</em>, light and the people who use them.</h1></div>
+    <div class="hero-side"><p>Berk Nazlım is an Istanbul-based designer and interior architect, and a 2026 graduate of Istanbul Technical University. His work moves between interiors, cultural buildings and hand-made models.</p>
     <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">View projects <span class="arrow">→</span></a><a class="btn" href="about.html">About</a></div></div>
   </div>
-  <a href="project.html?p=galata-archive" class="hero-figure"><figure><div class="media" id="hero-art"></div>
-  <figcaption><span>Galata Archive &amp; Library, Istanbul</span><span class="mono">2025</span></figcaption></figure></a>
+  <a href="project.html?p=ortakoy-dansresim" class="hero-figure"><figure><div class="media" id="hero-art"></div>
+  <figcaption><span>Ortaköy DansResim, Istanbul</span><span class="mono">2025</span></figcaption></figure></a>
 </div></section>
 
 <section class="section"><div class="wrap intro">
-  <div><span class="label">01 — Studio</span></div>
+  <div><span class="label">01 — Approach</span></div>
   <div>
     <p class="statement reveal">Good architecture reads its site, respects its city and gives something back to the people who use it.</p>
-    <p class="lead reveal">Trained at ITU's Faculty of Architecture in the historic Taşkışla building, Berk works across scales, from a single pavilion to towers, hotels and whole neighbourhoods. Every project combines careful analysis with a deep respect for place, climate and material.</p>
+    <p class="lead reveal">Trained in the Department of Interior Architecture at ITU's Faculty of Architecture, Berk has worked on construction sites and in design offices since 2023, from a hotel lobby in Maçka to an apartment in Zeytinburnu. Each project starts from one clear idea and carries it down to the material, the furniture and the detail.</p>
     <a class="link reveal" href="about.html">More about Berk →</a>
     <div class="stats">
-      <div class="stat"><div class="num">24</div><p>Projects designed</p></div>
-      <div class="stat"><div class="num">9</div><p>Awards and distinctions</p></div>
-      <div class="stat"><div class="num">6</div><p>Countries</p></div>
-      <div class="stat"><div class="num">140<sup>k m²</sup></div><p>Floor area in design</p></div>
+      <div class="stat"><div class="num">6</div><p>Selected projects</p></div>
+      <div class="stat"><div class="num">5</div><p>Roles in offices and on site</p></div>
+      <div class="stat"><div class="num">7</div><p>Design and rendering tools</p></div>
+      <div class="stat"><div class="num">’26</div><p>ITU graduate</p></div>
     </div>
   </div>
 </div></section>
@@ -236,12 +237,12 @@ def home(lang):
 </div></section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Services</span><h2>What the studio does</h2></div><a class="link" href="services.html">All services →</a></div>
+  <div class="section-head"><div><span class="label">03 — Services</span><h2>What I do</h2></div><a class="link" href="services.html">All services →</a></div>
   <div class="services-list">
-    <div class="service reveal"><span class="n mono">01</span><h3>Architecture</h3><p>From first concept to construction drawings for cultural, residential, commercial and mixed-use buildings.</p></div>
-    <div class="service reveal"><span class="n mono">02</span><h3>Interiors</h3><p>Spaces, furniture and lighting designed as one continuous idea with the building.</p></div>
-    <div class="service reveal"><span class="n mono">03</span><h3>Urban design</h3><p>Masterplans and public spaces that make neighbourhoods more liveable and more resilient.</p></div>
-    <div class="service reveal"><span class="n mono">04</span><h3>Restoration &amp; reuse</h3><p>New life for existing buildings, from heritage warehouses to post-war housing.</p></div>
+    <div class="service reveal"><span class="n mono">01</span><h3>Interior architecture</h3><p>Homes, cafés and restaurants planned as one idea, from the layout to the materials, lighting and furniture.</p></div>
+    <div class="service reveal"><span class="n mono">02</span><h3>Architectural design</h3><p>Concept and schematic design for cultural, hospitality and leisure buildings.</p></div>
+    <div class="service reveal"><span class="n mono">03</span><h3>Visualisation &amp; models</h3><p>Renders, presentation drawings and physical models that show a space before it is built.</p></div>
+    <div class="service reveal"><span class="n mono">04</span><h3>Site &amp; construction</h3><p>Renovation and repair work followed on site, with material and detail decisions made alongside the builders.</p></div>
   </div>
 </div></section>
 
@@ -252,26 +253,26 @@ def home(lang):
 '''
     return '''<section class="hero"><div class="wrap">
   <div class="hero-top">
-    <div><span class="label">Mimarlık · İç mimarlık · Kentsel tasarım — İstanbul</span>
-    <h1>Yere kök salan, gelecek yüzyıl için <em>tasarlanan</em> mimarlık.</h1></div>
-    <div class="hero-side"><p>Berk Nazlım, İstanbul Teknik Üniversitesi mezunu, İstanbul merkezli bir mimar. Kültür, konut ve karma kullanımlı yapılar tasarlıyor.</p>
+    <div><span class="label">İç mimarlık · Tasarım — İstanbul</span>
+    <h1><em>Malzeme</em>, ışık ve onu kullanan insanlarla biçimlenen mekânlar.</h1></div>
+    <div class="hero-side"><p>Berk Nazlım, İstanbul merkezli bir tasarımcı ve iç mimar; 2026 yılında İstanbul Teknik Üniversitesi'nden mezun oldu. Çalışmaları iç mekânlar, kültür yapıları ve elle yapılan maketler arasında ilerliyor.</p>
     <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">Projeleri gör <span class="arrow">→</span></a><a class="btn" href="about.html">Hakkında</a></div></div>
   </div>
-  <a href="project.html?p=galata-archive" class="hero-figure"><figure><div class="media" id="hero-art"></div>
-  <figcaption><span>Galata Arşiv ve Kütüphanesi, İstanbul</span><span class="mono">2025</span></figcaption></figure></a>
+  <a href="project.html?p=ortakoy-dansresim" class="hero-figure"><figure><div class="media" id="hero-art"></div>
+  <figcaption><span>Ortaköy DansResim, İstanbul</span><span class="mono">2025</span></figcaption></figure></a>
 </div></section>
 
 <section class="section"><div class="wrap intro">
-  <div><span class="label">01 — Stüdyo</span></div>
+  <div><span class="label">01 — Yaklaşım</span></div>
   <div>
     <p class="statement reveal">İyi mimarlık yerini okur, kentine saygı duyar ve onu kullanan insanlara bir şey geri verir.</p>
-    <p class="lead reveal">Eğitimini İTÜ Mimarlık Fakültesi'nde, tarihi Taşkışla binasında alan Berk, tek bir pavyondan kulelere, otellere ve mahallelere kadar her ölçekte çalışıyor. Her proje, dikkatli bir analizi yere, iklime ve malzemeye duyulan derin saygıyla birleştiriyor.</p>
+    <p class="lead reveal">İTÜ Mimarlık Fakültesi İç Mimarlık Bölümü'nde eğitim alan Berk, 2023'ten bu yana şantiyelerde ve tasarım ofislerinde çalışıyor: Maçka'daki bir otel lobisinden Zeytinburnu'ndaki bir daireye kadar. Her proje tek ve net bir fikirle başlıyor ve bu fikri malzemeye, mobilyaya ve detaya kadar taşıyor.</p>
     <a class="link reveal" href="about.html">Berk hakkında daha fazlası →</a>
     <div class="stats">
-      <div class="stat"><div class="num">24</div><p>Tasarlanan proje</p></div>
-      <div class="stat"><div class="num">9</div><p>Ödül ve derece</p></div>
-      <div class="stat"><div class="num">6</div><p>Ülke</p></div>
-      <div class="stat"><div class="num">140<sup>bin m²</sup></div><p>Tasarımdaki inşaat alanı</p></div>
+      <div class="stat"><div class="num">6</div><p>Seçili proje</p></div>
+      <div class="stat"><div class="num">5</div><p>Ofis ve şantiye deneyimi</p></div>
+      <div class="stat"><div class="num">7</div><p>Tasarım ve görselleştirme aracı</p></div>
+      <div class="stat"><div class="num">’26</div><p>İTÜ mezunu</p></div>
     </div>
   </div>
 </div></section>
@@ -282,12 +283,12 @@ def home(lang):
 </div></section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Hizmetler</span><h2>Stüdyo neler yapıyor</h2></div><a class="link" href="services.html">Tüm hizmetler →</a></div>
+  <div class="section-head"><div><span class="label">03 — Hizmetler</span><h2>Neler yapıyorum</h2></div><a class="link" href="services.html">Tüm hizmetler →</a></div>
   <div class="services-list">
-    <div class="service reveal"><span class="n mono">01</span><h3>Mimarlık</h3><p>Kültür, konut, ticari ve karma kullanımlı yapılar için ilk konseptten uygulama projesine kadar.</p></div>
-    <div class="service reveal"><span class="n mono">02</span><h3>İç mimarlık</h3><p>Mekân, mobilya ve aydınlatmanın binayla tek ve kesintisiz bir fikir olarak tasarlanması.</p></div>
-    <div class="service reveal"><span class="n mono">03</span><h3>Kentsel tasarım</h3><p>Mahalleleri daha yaşanabilir ve daha dirençli kılan master planlar ve kamusal alanlar.</p></div>
-    <div class="service reveal"><span class="n mono">04</span><h3>Restorasyon ve yeniden kullanım</h3><p>Tarihi antrepolardan savaş sonrası konutlara, mevcut binalara yeni bir hayat.</p></div>
+    <div class="service reveal"><span class="n mono">01</span><h3>İç mimarlık</h3><p>Plan kurgusundan malzemeye, aydınlatmaya ve mobilyaya kadar tek bir fikir olarak tasarlanan evler, kafeler ve restoranlar.</p></div>
+    <div class="service reveal"><span class="n mono">02</span><h3>Mimari tasarım</h3><p>Kültür, ağırlama ve rekreasyon yapıları için konsept ve avan proje.</p></div>
+    <div class="service reveal"><span class="n mono">03</span><h3>Görselleştirme ve maket</h3><p>Bir mekânı inşa edilmeden önce gösteren görseller, sunum çizimleri ve fiziksel maketler.</p></div>
+    <div class="service reveal"><span class="n mono">04</span><h3>Şantiye ve uygulama</h3><p>Sahada takip edilen tadilat ve onarım işleri; malzeme ve detay kararları ustalarla birlikte.</p></div>
   </div>
 </div></section>
 
@@ -302,7 +303,7 @@ def portfolio(lang):
     if lang == "en":
         return '''<section class="page-head"><div class="wrap">
   <span class="label">Portfolio</span><h1>Selected <em>work</em></h1>
-  <p class="lead">Buildings, interiors, competitions and research, from Istanbul to the Norwegian fjords.</p>
+  <p class="lead">Academic and freelance work: a cultural centre, cafés and restaurants, a waterfront and a family home, around Istanbul and Çanakkale.</p>
 </div></section>
 <section class="section"><div class="wrap">
   <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
@@ -316,7 +317,7 @@ def portfolio(lang):
 '''
     return '''<section class="page-head"><div class="wrap">
   <span class="label">Projeler</span><h1>Seçili <em>işler</em></h1>
-  <p class="lead">İstanbul'dan Norveç fiyortlarına binalar, iç mekânlar, yarışmalar ve araştırmalar.</p>
+  <p class="lead">Akademik ve serbest çalışmalar: bir kültür merkezi, kafe ve restoranlar, bir kıyı projesi ve bir aile evi; İstanbul ve Çanakkale'de.</p>
 </div></section>
 <section class="section"><div class="wrap">
   <div class="filters" id="filters" role="group" aria-label="Projeleri filtrele"></div>
@@ -332,43 +333,39 @@ def portfolio(lang):
 
 SERVICES = {
     "en": [
-        ("Architectural design", "Concept, schematic and developed design through to permit and construction documents for new buildings of every scale.",
-         ["Concept design", "Permit drawings", "Construction documents", "Site supervision"]),
-        ("Interior architecture", "Interiors that carry the building's idea inside: space planning, materials, lighting and bespoke furniture.",
-         ["Space planning", "Material palettes", "Lighting", "Custom joinery"]),
-        ("Urban design & masterplanning", "Neighbourhood plans, public spaces and resilient housing strategies that put people and climate first.",
-         ["Masterplans", "Public space", "Feasibility studies", "Seismic resilience"]),
-        ("Restoration & adaptive reuse", "Surveys, restoration and new uses for existing and historic buildings, keeping their character and their embodied carbon.",
-         ["Building surveys", "Restoration", "Change of use", "Retrofit"]),
-        ("Visualisation & models", "Drawings, renders and physical models that let clients understand a building before it exists.",
-         ["Presentation drawings", "Renders", "Physical models", "Walkthroughs"]),
-        ("Competitions & consultancy", "Competition entries, design reviews and sustainability advice for developers, institutions and other practices.",
-         ["Competition entries", "Design review", "Sustainability strategy", "Feasibility"]),
+        ("Interior architecture", "Homes, cafés and restaurants designed as one idea: space planning, materials, lighting and furniture made for the space.",
+         ["Space planning", "Material palettes", "Lighting", "Custom furniture and joinery"]),
+        ("Architectural design", "Concept and schematic design for cultural, hospitality and leisure buildings, worked out in plan, section and model.",
+         ["Concept design", "Schematic design", "Plans and sections", "Presentation drawings"]),
+        ("Visualisation & models", "Renders and physical models that let clients see and feel a space before it is built.",
+         ["3ds Max + Corona renders", "Lumion and SketchUp", "Physical models", "Hand sketches"]),
+        ("Site & construction", "Renovation and repair work followed on site, coordinating builders, schedules and finishes.",
+         ["Site management", "Renovation", "Contractor coordination", "Quality checks"]),
+        ("Materials & details", "Advice on materials, paving and finishes, with detail drawings that solve problems on site.",
+         ["Material selection", "Stone and paving", "Detail drawings", "Investor-side design review"]),
     ],
     "tr": [
-        ("Mimari tasarım", "Her ölçekte yeni yapılar için konsept, avan ve kesin projeden ruhsat ve uygulama projelerine kadar.",
-         ["Konsept tasarım", "Ruhsat projesi", "Uygulama projesi", "Şantiye denetimi"]),
-        ("İç mimarlık", "Binanın fikrini içeriye taşıyan iç mekânlar: mekân kurgusu, malzeme, aydınlatma ve özel mobilya.",
-         ["Mekân planlama", "Malzeme paleti", "Aydınlatma", "Özel mobilya"]),
-        ("Kentsel tasarım ve master plan", "İnsanı ve iklimi öne koyan mahalle planları, kamusal alanlar ve dirençli konut stratejileri.",
-         ["Master plan", "Kamusal alan", "Fizibilite", "Deprem dayanıklılığı"]),
-        ("Restorasyon ve yeniden kullanım", "Mevcut ve tarihi binalar için rölöve, restorasyon ve yeni işlevler; karakterlerini ve gömülü karbonlarını koruyarak.",
-         ["Rölöve", "Restorasyon", "İşlev değişikliği", "Güçlendirme"]),
-        ("Görselleştirme ve maket", "Müşterinin bir binayı daha var olmadan anlamasını sağlayan çizimler, görseller ve fiziksel maketler.",
-         ["Sunum çizimleri", "Görselleştirme", "Fiziksel maket", "Sanal tur"]),
-        ("Yarışma ve danışmanlık", "Yatırımcılar, kurumlar ve diğer ofisler için yarışma projeleri, tasarım değerlendirmesi ve sürdürülebilirlik danışmanlığı.",
-         ["Yarışma projeleri", "Tasarım değerlendirmesi", "Sürdürülebilirlik", "Fizibilite"]),
+        ("İç mimarlık", "Tek bir fikir olarak tasarlanan evler, kafeler ve restoranlar: mekân kurgusu, malzeme, aydınlatma ve mekâna özel mobilya.",
+         ["Mekân planlama", "Malzeme paleti", "Aydınlatma", "Özel mobilya ve doğrama"]),
+        ("Mimari tasarım", "Kültür, ağırlama ve rekreasyon yapıları için plan, kesit ve maketle geliştirilen konsept ve avan proje.",
+         ["Konsept tasarım", "Avan proje", "Plan ve kesitler", "Sunum çizimleri"]),
+        ("Görselleştirme ve maket", "Bir mekânı inşa edilmeden önce görmeyi ve hissetmeyi sağlayan görseller ve fiziksel maketler.",
+         ["3ds Max + Corona görselleri", "Lumion ve SketchUp", "Fiziksel maket", "Elle eskiz"]),
+        ("Şantiye ve uygulama", "Sahada takip edilen tadilat ve onarım işleri; ustaların, iş programının ve ince işlerin koordinasyonu.",
+         ["Şantiye yönetimi", "Tadilat", "Yüklenici koordinasyonu", "Kalite kontrol"]),
+        ("Malzeme ve detay", "Malzeme, zemin kaplaması ve ince işler üzerine danışmanlık; sahadaki sorunları çözen detay çizimleri.",
+         ["Malzeme seçimi", "Taş ve zemin kaplaması", "Detay çizimleri", "Yatırımcı tarafında tasarım değerlendirmesi"]),
     ],
 }
 PROCESS = {
     "en": [("Listen", "Site visit, brief, budget and ambitions. We agree on what success looks like."),
            ("Explore", "Sketches, models and analysis to test several directions quickly."),
            ("Refine", "One direction developed in detail: plans, materials, structure and cost."),
-           ("Build", "Permits, construction documents and close supervision on site until handover.")],
+           ("Build", "Drawings, material choices and close follow-up on site until handover.")],
     "tr": [("Dinlemek", "Arazi ziyareti, ihtiyaç programı, bütçe ve hedefler. Başarının ne olduğunu birlikte tanımlarız."),
            ("Keşfetmek", "Birkaç yönü hızla denemek için eskizler, maketler ve analizler."),
            ("Geliştirmek", "Seçilen yönün ayrıntılı geliştirilmesi: planlar, malzeme, taşıyıcı sistem ve maliyet."),
-           ("İnşa etmek", "Ruhsat, uygulama projeleri ve teslimata kadar şantiyede yakın takip.")],
+           ("İnşa etmek", "Çizimler, malzeme kararları ve teslimata kadar şantiyede yakın takip.")],
 }
 
 
@@ -380,8 +377,8 @@ def services(lang):
                     for i, (t, d) in enumerate(PROCESS[lang]))
     if lang == "en":
         return f'''<section class="page-head"><div class="wrap">
-  <span class="label">Services</span><h1>From first sketch to <em>finished</em> building</h1>
-  <p class="lead">A full architectural service, or exactly the part you need. Every project is led personally by Berk.</p>
+  <span class="label">Services</span><h1>From first sketch to <em>finished</em> space</h1>
+  <p class="lead">A complete design service, or exactly the part you need. Every project is handled personally by Berk.</p>
 </div></section>
 <section class="section"><div class="wrap"><div class="services-list">{rows}</div></div></section>
 <section class="section"><div class="wrap">
@@ -390,8 +387,8 @@ def services(lang):
 </div></section>
 '''
     return f'''<section class="page-head"><div class="wrap">
-  <span class="label">Hizmetler</span><h1>İlk eskizden <em>tamamlanmış</em> binaya</h1>
-  <p class="lead">Eksiksiz bir mimarlık hizmeti ya da tam ihtiyacınız olan kısım. Her proje bizzat Berk tarafından yürütülür.</p>
+  <span class="label">Hizmetler</span><h1>İlk eskizden <em>tamamlanmış</em> mekâna</h1>
+  <p class="lead">Eksiksiz bir tasarım hizmeti ya da tam ihtiyacınız olan kısım. Her proje bizzat Berk tarafından yürütülür.</p>
 </div></section>
 <section class="section"><div class="wrap"><div class="services-list">{rows}</div></div></section>
 <section class="section"><div class="wrap">
@@ -404,65 +401,51 @@ def services(lang):
 ABOUT = {
     "en": {
         "label": "About", "title": "Berk <em>Nazlım</em>",
-        "lead": "Architect. Istanbul Technical University, Faculty of Architecture, class of 2026.",
-        "caption": ("Portrait coming soon", "Istanbul"),
-        "statement": "I design buildings that belong to their place and to their time.",
+        "lead": "Designer and interior architect. Istanbul Technical University, Faculty of Architecture, Department of Interior Architecture, class of 2026.",
+        "caption": ("Berk Nazlım", "Istanbul"),
+        "statement": "I design spaces that belong to their place and to the people who use them.",
         "bio": [
-            "I grew up between the Bosphorus and the hills of Istanbul, a city where Byzantine walls, Ottoman domes and glass towers share the same skyline. That layered city taught me that architecture is always a conversation between past and future.",
-            "I studied architecture at Istanbul Technical University, one of the oldest technical universities in the world, in the historic Taşkışla building. There I learned to draw by hand, to think in section and to treat structure, climate and context as the raw material of design.",
-            "Today my work combines digital tools with craft: careful studies to find the right form, and precise detailing to build it well. Whether it is a small house or a tower, the aim is the same: architecture that is generous, durable and calm.",
+            "I am an Istanbul-based designer and interior architect, born in 1999. I studied in the Department of Interior Architecture at Istanbul Technical University's Faculty of Architecture.",
+            "At ITU I learned to draw by hand, to think in section and to test ideas with physical models, often built from the same materials as the real thing: bamboo and walnut for a book café, cardboard and wood for a hillside retreat.",
+            "Alongside my studies I have worked on construction sites and in design offices: managing repairs in a hotel lobby, making material decisions for international hotel brands, planning stone paving for a shopping mall and designing a family apartment from start to finish. I enjoy the whole path, from the first concept to the last brass inlay.",
         ],
-        "path": "Path",
-        "timeline": [("2026 —", "Founder, Berk Nazlım Architecture", "Independent studio in Istanbul working on cultural, residential and mixed-use projects."),
-                     ("2026", "B.Arch, Istanbul Technical University", "Faculty of Architecture. Graduation project: Seismic Commons, a resilient housing model."),
-                     ("2025", "Design intern, international practice", "Competition and tower projects in Europe and the Middle East."),
-                     ("2024", "Exchange semester, Europe", "Studio work on timber construction and adaptive reuse."),
-                     ("2022", "Intern, Istanbul architecture office", "Residential and interior projects, construction site experience.")],
-        "tools": "Tools", "langs": "Languages",
-        "langlist": ["Turkish — native", "English — fluent", "German — intermediate"],
-        "toollist": ["Hand drawing", "Model making", "Rhino", "Grasshopper", "Revit", "AutoCAD", "Blender", "Enscape", "Adobe CC"],
+        "path": "Experience",
+        "timeline": [("2026", "Interior Architecture degree, Istanbul Technical University", "Faculty of Architecture, Department of Interior Architecture."),
+                     ("2025", "Freelance interior designer", "Interior of a residential apartment in YediMavi, Zeytinburnu, for a married couple."),
+                     ("2025", "Intern, Topaz Construction", "Construction site of the second phase of the 5. Levent projects."),
+                     ("2024", "Advisor and schematic designer, Legra Design", "Planned stone paving to correct ground irregularities left by rough-construction errors at a shopping mall in Tersane İstanbul, Haliç."),
+                     ("2023", "Intern, Carimond Invest, Design Office", "Hotel investment and construction for global brands; design and material decisions on the investor's side."),
+                     ("2023", "Site manager, The Wall Architecture", "Repair and painting of the lobby and service areas of the Swissôtel The Bosphorus in Maçka.")],
+        "tools": "Tools",
+        "toollist": ["Hand drawing", "Model making", "AutoCAD", "3ds Max", "Corona", "SketchUp", "Lumion", "Adobe", "Microsoft Office"],
         "values_label": "Principles", "values_title": "What guides the work",
-        "values": [("Context first", "Every site has a history, a climate and a community. Good architecture starts by listening to all three."),
-                   ("Built to last", "Seismic safety, durable materials and low-carbon thinking are not extras. They are the foundation."),
-                   ("Quiet, not loud", "Strong ideas, expressed with restraint and precise detail, age far better than fashion.")],
-        "awards_label": "Recognition", "awards_title": "Awards",
-        "awards": [("2026", "World Architecture Festival — Shortlist", "Bosphorus Light Pavilion"),
-                   ("2026", "Invited Competition — 1st Prize", "Levent Helix Tower"),
-                   ("2026", "AR Emerging Architecture — Commendation", "Tuff Retreat"),
-                   ("2026", "International Competition — 2nd Prize", "Fjord Timber School"),
-                   ("2026", "Arkitera Young Architect Award", "Studio"),
-                   ("2025", "National Competition — Honourable Mention", "Galata Archive & Library")],
+        "values": [("Context first", "Every site has a history, a climate and a community. Good design starts by listening to all three."),
+                   ("Material honesty", "Natural, local materials, used where they perform best, age well and make a space feel calm."),
+                   ("Down to the detail", "A strong idea only works if it survives to the last joint, handle and inlay. That is where I spend my time.")],
     },
     "tr": {
         "label": "Hakkında", "title": "Berk <em>Nazlım</em>",
-        "lead": "Mimar. İstanbul Teknik Üniversitesi, Mimarlık Fakültesi, 2026 mezunu.",
-        "caption": ("Portre yakında", "İstanbul"),
-        "statement": "Yerine ve zamanına ait binalar tasarlıyorum.",
+        "lead": "Tasarımcı ve iç mimar. İstanbul Teknik Üniversitesi, Mimarlık Fakültesi, İç Mimarlık Bölümü, 2026 mezunu.",
+        "caption": ("Berk Nazlım", "İstanbul"),
+        "statement": "Yerine ve onu kullanan insanlara ait mekânlar tasarlıyorum.",
         "bio": [
-            "Boğaz ile İstanbul'un tepeleri arasında büyüdüm; Bizans surlarının, Osmanlı kubbelerinin ve cam kulelerin aynı siluette buluştuğu bir şehirde. Bu katmanlı şehir bana mimarlığın her zaman geçmişle gelecek arasında bir diyalog olduğunu öğretti.",
-            "Mimarlık eğitimimi dünyanın en köklü teknik üniversitelerinden İstanbul Teknik Üniversitesi'nde, tarihi Taşkışla binasında aldım. Orada elle çizmeyi, kesitle düşünmeyi ve taşıyıcı sistemi, iklimi ve bağlamı tasarımın ham maddesi olarak görmeyi öğrendim.",
-            "Bugün çalışmalarım dijital araçları zanaatle birleştiriyor: doğru biçimi bulmak için dikkatli çalışmalar, onu iyi inşa etmek için titiz detaylar. Küçük bir ev de olsa bir kule de olsa amaç aynı: cömert, kalıcı ve sakin bir mimarlık.",
+            "1999 doğumlu, İstanbul merkezli bir tasarımcı ve iç mimarım. İstanbul Teknik Üniversitesi Mimarlık Fakültesi İç Mimarlık Bölümü'nde okudum.",
+            "İTÜ'de elle çizmeyi, kesitle düşünmeyi ve fikirleri fiziksel maketlerle denemeyi öğrendim; çoğu zaman gerçeğiyle aynı malzemeleri kullanarak: bir kitap kafe için bambu ve ceviz, bir yamaç projesi için karton ve ahşap.",
+            "Eğitimim boyunca şantiyelerde ve tasarım ofislerinde çalıştım: bir otel lobisindeki onarımları yönettim, uluslararası otel markaları için malzeme kararlarında yer aldım, bir alışveriş merkezi için taş kaplama planladım ve bir aile dairesini baştan sona tasarladım. İlk konseptten son pirinç kakmaya kadar bütün yolu seviyorum.",
         ],
-        "path": "Yol",
-        "timeline": [("2026 —", "Kurucu, Berk Nazlım Mimarlık", "Kültür, konut ve karma kullanımlı projeler üzerine çalışan İstanbul merkezli bağımsız stüdyo."),
-                     ("2026", "Lisans, İstanbul Teknik Üniversitesi", "Mimarlık Fakültesi. Bitirme projesi: dirençli bir konut modeli olan Sismik Ortak Alanlar."),
-                     ("2025", "Tasarım stajyeri, uluslararası ofis", "Avrupa ve Orta Doğu'da yarışma ve kule projeleri."),
-                     ("2024", "Değişim dönemi, Avrupa", "Ahşap yapım ve yeniden kullanım üzerine stüdyo çalışmaları."),
-                     ("2022", "Stajyer, İstanbul'da bir mimarlık ofisi", "Konut ve iç mimarlık projeleri, şantiye deneyimi.")],
-        "tools": "Araçlar", "langs": "Diller",
-        "langlist": ["Türkçe — ana dil", "İngilizce — ileri", "Almanca — orta"],
-        "toollist": ["Elle çizim", "Maket", "Rhino", "Grasshopper", "Revit", "AutoCAD", "Blender", "Enscape", "Adobe CC"],
+        "path": "Deneyim",
+        "timeline": [("2026", "İç Mimarlık lisansı, İstanbul Teknik Üniversitesi", "Mimarlık Fakültesi, İç Mimarlık Bölümü."),
+                     ("2025", "Serbest iç mimar", "Zeytinburnu YediMavi'de evli bir çift için konut dairesi iç mimari projesi."),
+                     ("2025", "Stajyer, Topaz İnşaat", "5. Levent projelerinin ikinci etap şantiyesi."),
+                     ("2024", "Danışman ve avan proje tasarımcısı, Legra Design", "Tersane İstanbul, Haliç'teki bir alışveriş merkezinde kaba inşaat hatalarından kaynaklanan zemin bozukluklarını gidermek için taş kaplama planlaması."),
+                     ("2023", "Stajyer, Carimond Invest Tasarım Ofisi", "Global markalar için otel yatırımları ve inşaatı; yatırımcı tarafında tasarım ve malzeme kararları."),
+                     ("2023", "Şantiye sorumlusu, The Wall Architecture", "Maçka'daki Swissôtel The Bosphorus'un lobi ve servis alanlarının onarımı ve boyası.")],
+        "tools": "Araçlar",
+        "toollist": ["Elle çizim", "Maket", "AutoCAD", "3ds Max", "Corona", "SketchUp", "Lumion", "Adobe", "Microsoft Office"],
         "values_label": "İlkeler", "values_title": "İşe yön veren ilkeler",
-        "values": [("Önce bağlam", "Her arazinin bir tarihi, bir iklimi ve bir topluluğu vardır. İyi mimarlık üçünü de dinleyerek başlar."),
-                   ("Kalıcı olmak için", "Deprem güvenliği, dayanıklı malzemeler ve düşük karbonlu düşünce ek değildir. Temelin kendisidir."),
-                   ("Sakin, gösterişsiz", "Ölçülü ve titiz detaylarla ifade edilen güçlü fikirler, modadan çok daha iyi yaşlanır.")],
-        "awards_label": "Takdir", "awards_title": "Ödüller",
-        "awards": [("2026", "World Architecture Festival — Finalist", "Boğaziçi Işık Pavyonu"),
-                   ("2026", "Davetli Yarışma — Birincilik", "Levent Helix Kulesi"),
-                   ("2026", "AR Emerging Architecture — Övgü", "Tüf Otel"),
-                   ("2026", "Uluslararası Yarışma — İkincilik", "Fiyort Ahşap Okulu"),
-                   ("2026", "Arkitera Genç Mimar Ödülü", "Stüdyo"),
-                   ("2025", "Ulusal Yarışma — Mansiyon", "Galata Arşiv ve Kütüphanesi")],
+        "values": [("Önce bağlam", "Her arazinin bir tarihi, bir iklimi ve bir topluluğu vardır. İyi tasarım üçünü de dinleyerek başlar."),
+                   ("Dürüst malzeme", "En iyi çalıştıkları yerde kullanılan doğal ve yerel malzemeler iyi yaşlanır ve mekâna huzur verir."),
+                   ("Detaya kadar", "Güçlü bir fikir ancak son birleşime, kulpa ve kakmaya kadar korunursa işe yarar. Zamanımı orada geçiriyorum.")],
     },
 }
 
@@ -472,27 +455,21 @@ def about(lang):
     bio = "".join(f"<p>{p}</p>" for p in a["bio"])
     tl = "".join(f'<div class="tl"><span class="y mono">{y}</span><div><h4>{t}</h4><p>{d}</p></div></div>' for y, t, d in a["timeline"])
     vals = "".join(f'<div class="value reveal"><span class="n mono">{i + 1:02d}</span><h4>{t}</h4><p>{d}</p></div>' for i, (t, d) in enumerate(a["values"]))
-    aw = "".join(f'<div class="award"><span class="y mono">{y}</span><span class="t">{t}</span><span class="c">{p}</span></div>' for y, t, p in a["awards"])
     return f'''<section class="page-head"><div class="wrap">
   <span class="label">{a["label"]}</span><h1>{a["title"]}</h1><p class="lead">{a["lead"]}</p>
 </div></section>
 <section class="section"><div class="wrap about-grid">
-  <figure class="portrait"><div class="media" id="portrait-art"></div><figcaption><span>{a["caption"][0]}</span><span class="mono">{a["caption"][1]}</span></figcaption></figure>
+  <figure class="portrait"><div class="media" id="portrait-art"><img src="{"../" if lang == "tr" else ""}assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536"></div><figcaption><span>{a["caption"][0]}</span><span class="mono">{a["caption"][1]}</span></figcaption></figure>
   <div>
     <p class="statement">{a["statement"]}</p>
     <div class="lead" style="max-width:none">{bio}</div>
     <div class="block"><span class="label">{a["path"]}</span><div class="timeline">{tl}</div></div>
     <div class="block"><span class="label">{a["tools"]}</span><div class="tags">{"".join(f"<span>{x}</span>" for x in a["toollist"])}</div></div>
-    <div class="block"><span class="label">{a["langs"]}</span><div class="tags">{"".join(f"<span>{x}</span>" for x in a["langlist"])}</div></div>
   </div>
 </div></section>
 <section class="section"><div class="wrap">
   <div class="section-head"><div><span class="label">{a["values_label"]}</span><h2>{a["values_title"]}</h2></div></div>
   <div class="values">{vals}</div>
-</div></section>
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">{a["awards_label"]}</span><h2>{a["awards_title"]}</h2></div></div>
-  <div class="awards-table">{aw}</div>
 </div></section>
 '''
 
@@ -501,7 +478,7 @@ def journal(lang):
     if lang == "en":
         return '''<section class="page-head"><div class="wrap">
   <span class="label">Journal</span><h1>News &amp; <em>ideas</em></h1>
-  <p class="lead">The latest in architecture: materials, technology, cities and the work of the studio.</p>
+  <p class="lead">The latest in architecture: materials, technology, cities and notes on my own work.</p>
 </div></section>
 <section class="section"><div class="wrap">
   <div id="feature"></div>
@@ -511,7 +488,7 @@ def journal(lang):
 '''
     return '''<section class="page-head"><div class="wrap">
   <span class="label">Günlük</span><h1>Haberler ve <em>fikirler</em></h1>
-  <p class="lead">Mimarlıkta son gelişmeler: malzeme, teknoloji, kentler ve stüdyonun çalışmaları.</p>
+  <p class="lead">Mimarlıkta son gelişmeler: malzeme, teknoloji, kentler ve kendi çalışmalarımdan notlar.</p>
 </div></section>
 <section class="section"><div class="wrap">
   <div id="feature"></div>
@@ -524,20 +501,20 @@ def journal(lang):
 CONTACT = {
     "en": {
         "label": "Contact", "title": "Let's <em>talk</em>",
-        "lead": "New buildings, interiors, competitions or collaborations. Tell me about your project and I'll reply within two working days.",
-        "email": "Email", "studio": "Studio", "hours": "Hours", "hours_v": "Mon – Fri, 09:00 – 18:00 (GMT+3)", "social": "Social",
+        "lead": "Interiors, renovations, collaborations or a job opportunity. Tell me about your project and I'll reply within two working days.",
+        "email": "Email", "studio": "Based in", "hours": "Hours", "hours_v": "Mon – Fri, 09:00 – 18:00 (GMT+3)", "social": "Social",
         "name": "Name", "mail": "Email", "company": "Company (optional)", "type": "Project type",
-        "types": ["Residential", "Commercial", "Interior", "Urban", "Other"],
+        "types": ["Residential", "Interior", "Hospitality", "Collaboration", "Other"],
         "budget": "Estimated budget", "select": "Select…",
         "budgets": ["Under €100k", "€100k – €500k", "€500k – €2M", "Over €2M", "Not sure yet"],
         "message": "About the project", "send": "Send message",
     },
     "tr": {
         "label": "İletişim", "title": "Hadi <em>konuşalım</em>",
-        "lead": "Yeni binalar, iç mekânlar, yarışmalar ya da iş birlikleri. Projenizden bahsedin, iki iş günü içinde yanıt vereyim.",
-        "email": "E-posta", "studio": "Stüdyo", "hours": "Çalışma saatleri", "hours_v": "Pzt – Cum, 09:00 – 18:00", "social": "Sosyal medya",
+        "lead": "İç mekânlar, tadilatlar, iş birlikleri ya da bir iş fırsatı. Projenizden bahsedin, iki iş günü içinde yanıt vereyim.",
+        "email": "E-posta", "studio": "Konum", "hours": "Çalışma saatleri", "hours_v": "Pzt – Cum, 09:00 – 18:00", "social": "Sosyal medya",
         "name": "Ad soyad", "mail": "E-posta", "company": "Firma (isteğe bağlı)", "type": "Proje türü",
-        "types": ["Konut", "Ticari", "İç mimarlık", "Kentsel", "Diğer"],
+        "types": ["Konut", "İç mimarlık", "Ağırlama", "İş birliği", "Diğer"],
         "budget": "Tahmini bütçe", "select": "Seçin…",
         "budgets": ["1 milyon ₺ altı", "1 – 5 milyon ₺", "5 – 20 milyon ₺", "20 milyon ₺ üzeri", "Henüz bilmiyorum"],
         "message": "Proje hakkında", "send": "Mesaj gönder",
@@ -555,10 +532,10 @@ def contact(lang):
 </div></section>
 <section class="section"><div class="wrap contact-grid">
   <div class="contact-info"><dl>
-    <div><dt class="label">{c["email"]}</dt><dd><a href="mailto:hello@berknazlim.com">hello@berknazlim.com</a></dd></div>
+    <div><dt class="label">{c["email"]}</dt><dd><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a></dd></div>
     <div><dt class="label">{c["studio"]}</dt><dd>{city}</dd></div>
     <div><dt class="label">{c["hours"]}</dt><dd>{c["hours_v"]}</dd></div>
-    <div><dt class="label">{c["social"]}</dt><dd><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a> · <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></dd></div>
+    <div><dt class="label">{c["social"]}</dt><dd><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a></dd></div>
   </dl></div>
   <form id="contact-form">
     <div class="form-row">
@@ -578,24 +555,24 @@ def contact(lang):
 
 META = {
     "en": {
-        "index.html": ("Berk Nazlım — Architect, Istanbul", "Berk Nazlım is an Istanbul-based architect designing cultural, residential and mixed-use buildings."),
-        "portfolio.html": ("Portfolio — Berk Nazlım", "Selected projects by Berk Nazlım: cultural buildings, towers, hotels, housing and competitions."),
-        "project.html": ("Project — Berk Nazlım", "A project by Berk Nazlım Architecture."),
-        "services.html": ("Services — Berk Nazlım", "Architectural design, interiors, urban design, restoration, visualisation and competitions."),
-        "about.html": ("About — Berk Nazlım", "Berk Nazlım is an architect from Istanbul and a graduate of Istanbul Technical University (2026)."),
+        "index.html": ("Berk Nazlım — Interior Architect, Istanbul", "Berk Nazlım is an Istanbul-based designer and interior architect, ITU class of 2026."),
+        "portfolio.html": ("Portfolio — Berk Nazlım", "Selected projects by Berk Nazlım: a cultural centre, cafés and restaurants, a waterfront and a family home."),
+        "project.html": ("Project — Berk Nazlım", "A project by Berk Nazlım."),
+        "services.html": ("Services — Berk Nazlım", "Interior architecture, architectural design, visualisation and models, site work and material advice."),
+        "about.html": ("About — Berk Nazlım", "Berk Nazlım is a designer and interior architect from Istanbul and a 2026 graduate of Istanbul Technical University."),
         "journal.html": ("Journal — Berk Nazlım", "News and essays on architecture, materials, technology and cities."),
         "post.html": ("Journal — Berk Nazlım", "An article from the Berk Nazlım journal."),
-        "contact.html": ("Contact — Berk Nazlım", "Contact Berk Nazlım Architecture in Istanbul about a new project."),
+        "contact.html": ("Contact — Berk Nazlım", "Contact Berk Nazlım in Istanbul about a new project."),
     },
     "tr": {
-        "index.html": ("Berk Nazlım — Mimar, İstanbul", "Berk Nazlım, kültür, konut ve karma kullanımlı yapılar tasarlayan İstanbul merkezli bir mimar."),
-        "portfolio.html": ("Projeler — Berk Nazlım", "Berk Nazlım'ın seçili projeleri: kültür yapıları, kuleler, oteller, konutlar ve yarışmalar."),
-        "project.html": ("Proje — Berk Nazlım", "Berk Nazlım Mimarlık projesi."),
-        "services.html": ("Hizmetler — Berk Nazlım", "Mimari tasarım, iç mimarlık, kentsel tasarım, restorasyon, görselleştirme ve yarışmalar."),
-        "about.html": ("Hakkında — Berk Nazlım", "Berk Nazlım, İstanbul Teknik Üniversitesi 2026 mezunu, İstanbullu bir mimar."),
+        "index.html": ("Berk Nazlım — İç Mimar, İstanbul", "Berk Nazlım, İstanbul merkezli bir tasarımcı ve iç mimar, İTÜ 2026 mezunu."),
+        "portfolio.html": ("Projeler — Berk Nazlım", "Berk Nazlım'ın seçili projeleri: bir kültür merkezi, kafe ve restoranlar, bir kıyı projesi ve bir aile evi."),
+        "project.html": ("Proje — Berk Nazlım", "Berk Nazlım'ın bir projesi."),
+        "services.html": ("Hizmetler — Berk Nazlım", "İç mimarlık, mimari tasarım, görselleştirme ve maket, şantiye ve malzeme danışmanlığı."),
+        "about.html": ("Hakkında — Berk Nazlım", "Berk Nazlım, İstanbullu bir tasarımcı ve iç mimar, İstanbul Teknik Üniversitesi 2026 mezunu."),
         "journal.html": ("Günlük — Berk Nazlım", "Mimarlık, malzeme, teknoloji ve kentler üzerine haberler ve yazılar."),
         "post.html": ("Günlük — Berk Nazlım", "Berk Nazlım günlüğünden bir yazı."),
-        "contact.html": ("İletişim — Berk Nazlım", "Yeni bir proje için İstanbul'daki Berk Nazlım Mimarlık ile iletişime geçin."),
+        "contact.html": ("İletişim — Berk Nazlım", "Yeni bir proje için İstanbul'daki Berk Nazlım ile iletişime geçin."),
     },
 }
 

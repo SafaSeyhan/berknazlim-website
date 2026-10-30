@@ -18,17 +18,17 @@
   const UI = {
     en: {
       all: "All", overview: "Overview", location: "Location", year: "Year", typology: "Typology", area: "Area",
-      client: "Client", status: "Status", next: "Next project", allProjects: "All projects", latest: "Latest",
+      client: "Client", status: "Context", next: "Next project", allProjects: "All projects", latest: "Latest",
       read: "Read article", back: "Journal", prev: "Previous", nextPost: "Next", readTime: "read",
-      views: ["Axonometric study", "Approach", "Detail"], opening: "Opening your email app… If nothing happens, write to ",
+      context: "Context", opening: "Opening your email app… If nothing happens, write to ",
       subject: "Project enquiry", name: "Name", email: "Email", company: "Company", type: "Project type", budget: "Budget",
       toLight: "Switch to light mode", toDark: "Switch to dark mode",
     },
     tr: {
       all: "Tümü", overview: "Genel bakış", location: "Konum", year: "Yıl", typology: "Tipoloji", area: "Alan",
-      client: "İşveren", status: "Durum", next: "Sonraki proje", allProjects: "Tüm projeler", latest: "En yeni",
+      client: "İşveren", status: "Bağlam", next: "Sonraki proje", allProjects: "Tüm projeler", latest: "En yeni",
       read: "Yazıyı oku", back: "Günlük", prev: "Önceki", nextPost: "Sonraki", readTime: "okuma",
-      views: ["Aksonometrik çalışma", "Yaklaşım", "Detay"], opening: "E-posta uygulamanız açılıyor… Açılmazsa şu adrese yazın: ",
+      context: "Bağlam", opening: "E-posta uygulamanız açılıyor… Açılmazsa şu adrese yazın: ",
       subject: "Proje talebi", name: "Ad", email: "E-posta", company: "Firma", type: "Proje türü", budget: "Bütçe",
       toLight: "Açık temaya geç", toDark: "Koyu temaya geç",
     },
@@ -38,11 +38,16 @@
   const fmtDate = (d) => new Date(d + "T00:00:00").toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
   const src = (p) => (/^(https?:)?\//.test(p) ? p : base + p);
 
-  function media(item, variant, cls) {
+  // photos come in two sizes: NN.jpg (1600px) and NN-sm.jpg (800px)
+  const small = (p) => p.replace(/(\.jpe?g)$/i, "-sm$1");
+  function picture(path, alt, sizes, eager) {
+    const s = src(path);
+    const set = /\/projects\//.test(path) ? ` srcset="${esc(src(small(path)))} 800w, ${esc(s)} 1600w" sizes="${sizes || "100vw"}"` : "";
+    return `<img src="${esc(s)}"${set} alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+  }
+  function media(item, variant, cls, sizes, eager) {
     const img = variant === 0 ? item.image : item.gallery && item.gallery[variant - 1];
-    const inner = img
-      ? `<img src="${esc(src(img))}" alt="${esc(item.title)}" loading="lazy">`
-      : ART.render(item.form, item.slug, variant);
+    const inner = img ? picture(img.src || img, item.title, sizes, eager) : ART.render(item.form, item.slug, variant);
     return `<div class="media ${cls || ""}">${inner}</div>`;
   }
 
@@ -118,9 +123,10 @@
   }
 
   function projectCard(p, i, cls) {
+    const sizes = cls === "wide" ? "(max-width: 820px) 100vw, 1300px" : "(max-width: 820px) 100vw, 50vw";
     return `<a class="project-card reveal ${cls || ""}" href="${projectUrl(p)}">
-      ${media(p, 0)}
-      <div class="project-info"><span class="n mono">${pad(i + 1)}</span><h3>${esc(p.title)}</h3><span class="meta">${esc(p.year)}</span></div>
+      ${media(p, 0, "", sizes)}
+      <div class="project-info"><span class="n mono">${pad(i + 1)}</span><h3>${esc(p.title)}</h3><span class="meta">${esc(p.year || "")}</span></div>
       <div class="project-sub">${esc(p.location)} · ${esc(p.category)}</div></a>`;
   }
 
@@ -132,8 +138,8 @@
   }
 
   if (page === "home") {
-    const hero = $("#hero-art");
-    if (hero) hero.innerHTML = ART.render("library", "galata-archive", 0);
+    const hero = $("#hero-art"), lead = projects.find((p) => p.hero) || projects[0];
+    if (hero && lead) hero.innerHTML = picture(lead.hero || lead.image, lead.title, "100vw", true);
     const feat = projects.filter((p) => p.featured).slice(0, 3);
     $("#featured").innerHTML = feat.map((p, i) => projectCard(p, i, ["wide", "narrow", ""][i])).join("");
     $("#latest-posts").innerHTML = posts.slice(0, 3).map(postCard).join("");
@@ -144,7 +150,7 @@
     const cats = [UI.all, ...new Set(projects.map((p) => p.category))];
     const count = (c) => (c === UI.all ? projects.length : projects.filter((p) => p.category === c).length);
     filters.innerHTML = cats.map((c, i) => `<button type="button" class="filter ${i ? "" : "active"}" data-cat="${esc(c)}" aria-pressed="${!i}">${esc(c)}<sup>${pad(count(c))}</sup></button>`).join("");
-    const layout = ["wide", "", "", "narrow", "", "", "", "wide"];
+    const layout = ["wide", "", "", "narrow", "", "wide"];
     const draw = (cat) => {
       const all = cat === UI.all;
       grid.innerHTML = projects.filter((p) => all || p.category === cat).map((p, i) => projectCard(p, i, all ? layout[i % layout.length] : "")).join("");
@@ -157,8 +163,8 @@
       draw(b.dataset.cat);
     });
     draw(UI.all);
-    $("#index-list").innerHTML = projects.slice().sort((a, b) => b.year - a.year)
-      .map((p, i) => `<a class="index-row" href="${projectUrl(p)}"><span class="mono">${pad(i + 1)}</span><span class="t">${esc(p.title)}</span><span class="c">${esc(p.location)}</span><span class="c">${esc(p.category)}</span><span class="y mono">${esc(p.year)}</span></a>`)
+    $("#index-list").innerHTML = projects.slice().sort((a, b) => (b.year || 0) - (a.year || 0))
+      .map((p, i) => `<a class="index-row" href="${projectUrl(p)}"><span class="mono">${pad(i + 1)}</span><span class="t">${esc(p.title)}</span><span class="c">${esc(p.location)}</span><span class="c">${esc(p.category)}</span><span class="y mono">${esc(p.year || "—")}</span></a>`)
       .join("");
   }
 
@@ -168,19 +174,17 @@
     if (i < 0) { location.replace("portfolio.html"); return; }
     const p = projects[i], next = projects[(i + 1) % projects.length];
     setMeta(p.title, p.summary, p.slug);
+    const facts = [[UI.location, p.location], [UI.year, p.year], [UI.typology, p.category], [UI.area, p.area], [UI.client, p.client], [UI.status, p.status]]
+      .filter(([, v]) => v);
+    const shotsList = (p.gallery || []).map((g) => (typeof g === "string" ? { src: g } : g));
     $("#project").innerHTML = `
       <section class="pd-head"><div class="wrap">
-        <span class="label">${esc(p.category)} · ${esc(p.year)}</span>
+        <span class="label">${[p.category, p.year].filter(Boolean).map(esc).join(" · ")}</span>
         <h1>${esc(p.title)}</h1>
       </div></section>
-      <div class="wrap pd-cover">${media(p, 0)}</div>
+      <div class="wrap pd-cover">${media(p, 0, "", "(max-width: 1400px) 100vw, 1400px", true)}</div>
       <div class="wrap"><dl class="pd-facts">
-        <div><dt class="label">${UI.location}</dt><dd>${esc(p.location)}</dd></div>
-        <div><dt class="label">${UI.year}</dt><dd>${esc(p.year)}</dd></div>
-        <div><dt class="label">${UI.typology}</dt><dd>${esc(p.category)}</dd></div>
-        <div><dt class="label">${UI.area}</dt><dd>${esc(p.area)}</dd></div>
-        <div><dt class="label">${UI.client}</dt><dd>${esc(p.client)}</dd></div>
-        <div><dt class="label">${UI.status}</dt><dd>${esc(p.status)}</dd></div>
+        ${facts.map(([k, v]) => `<div><dt class="label">${k}</dt><dd>${esc(v)}</dd></div>`).join("")}
       </dl></div>
       <section class="section"><div class="wrap">
         <div class="pd-body">
@@ -190,9 +194,9 @@
           </div>
           <div class="reveal">${p.body.map((t) => `<p>${esc(t)}</p>`).join("")}</div>
         </div>
-        <div class="pd-gallery">
-          ${[1, 2, 3].map((v) => `<figure class="reveal">${media(p, v)}<figcaption><span>${esc(UI.views[v - 1])}</span><span class="mono">${pad(v)}</span></figcaption></figure>`).join("")}
-        </div>
+        ${shotsList.length ? `<div class="pd-gallery">
+          ${shotsList.map((g, i) => `<figure class="reveal${g.wide ? " span" : ""}"><div class="media">${picture(g.src, g[lang] || g.en || p.title, g.wide ? "(max-width: 1400px) 100vw, 1400px" : "(max-width: 820px) 100vw, 50vw")}</div><figcaption><span>${esc(g[lang] || g.en || "")}</span><span class="mono">${pad(i + 1)}</span></figcaption></figure>`).join("")}
+        </div>` : ""}
       </div></section>
       <section class="cta"><div class="wrap cta-inner">
         <div><span class="label">${UI.next}</span><h2><a href="${projectUrl(next)}">${esc(next.title)}</a></h2></div>
@@ -246,7 +250,7 @@
 
   if (page === "about") {
     const art = $("#portrait-art");
-    if (art) art.innerHTML = ART.render("house", "portrait", 1);
+    if (art && !art.querySelector("img")) art.innerHTML = ART.render("house", "portrait", 1);
   }
 
   if (page === "contact") {

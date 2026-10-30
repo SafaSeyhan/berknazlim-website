@@ -2,293 +2,252 @@
    Site content (English + Turkish). Edit this file to change projects and
    journal posts. Every text field has an `en` and a `tr` version.
 
-   PROJECTS are placeholders: replace them with Berk's real work.
-   To show real photos instead of the generated drawings, put the files in
-   assets/img/ and add to a project:
-       image: "assets/img/bosphorus-cover.jpg",
-       gallery: ["assets/img/b1.jpg", "assets/img/b2.jpg", "assets/img/b3.jpg"],
+   PROJECTS come from Berk's portfolio. Images live in
+   assets/img/projects/<slug>/ as NN.jpg (1600px) plus NN-sm.jpg (800px),
+   which cards load on small screens. To add a project, copy one block,
+   give it a new slug and folder, and run `python3 tools/build.py` so the
+   sitemap picks it up. Fields you leave out (year, area, client…) are
+   simply not shown.
 
    POSTS are sorted by date automatically (newest first). `body` is HTML.
    ========================================================================== */
 
 window.SITE = {
-  email: "hello@berknazlim.com",
-  instagram: "https://instagram.com/",
-  linkedin: "https://linkedin.com/",
+  email: "nazlimberk@gmail.com",
+  linkedin: "https://www.linkedin.com/in/berk-nazl%C4%B1m-11b173279",
 };
+
+// gallery helper: [file number, English caption, Turkish caption, "wide" to span the full width]
+const shots = (slug, list) => list.map(([n, en, tr, size]) => ({ src: `assets/img/projects/${slug}/${n}.jpg`, en, tr, wide: size === "wide" }));
 
 window.PROJECTS = [
   {
-    slug: "bosphorus-light-pavilion",
-    year: 2026,
+    slug: "ortakoy-dansresim",
+    year: 2025,
+    form: "hall",
+    featured: true,
+    image: "assets/img/projects/ortakoy-dansresim/03.jpg",
+    hero: "assets/img/projects/ortakoy-dansresim/01.jpg",
+    gallery: shots("ortakoy-dansresim", [
+      ["01", "Section through the gallery void", "Galeri boşluğundan kesit", "wide"],
+      ["04", "Foyer and café", "Fuaye ve kafe"],
+      ["05", "Dance studio", "Dans stüdyosu"],
+      ["06", "Glass stair between the concrete walls", "Beton duvarlar arasındaki cam merdiven"],
+      ["02", "Gallery and stage levels", "Galeri ve sahne katları", "wide"],
+      ["07", "Circulation diagram", "Dolaşım diyagramı", "wide"],
+      ["08", "Sections", "Kesitler", "wide"],
+      ["09", "Sprung floor detail", "Esnek dans zemini detayı"],
+    ]),
+    en: {
+      title: "Ortaköy DansResim",
+      location: "Ortaköy, Istanbul",
+      category: "Cultural",
+      status: "Academic project, ITU",
+      summary: "A dance academy in Ortaköy that grows into an art centre where dance and painting meet.",
+      body: [
+        "DansResim began as a dance academy and became a cultural centre in which dance and painting share one building. From the entrance, the gallery opens as a single tall void, so the first thing a visitor meets is the art. The stage and the dance studios sit above it.",
+        "The stairs are made of glass and run between load-bearing concrete walls, like a ballerina's steps within discipline. Movement through the building is part of the performance.",
+        "A café and restaurant serve families while their children train. The studios have sprung dance floors, and a physiotherapy room supports the dancers. The plan moves from the general to the specific: public gallery and café below, then increasingly private spaces for training above.",
+      ],
+    },
+    tr: {
+      title: "Ortaköy DansResim",
+      location: "Ortaköy, İstanbul",
+      category: "Kültür",
+      status: "Akademik proje, İTÜ",
+      summary: "Ortaköy'de, dans ile resmin buluştuğu bir sanat merkezine dönüşen bir dans akademisi.",
+      body: [
+        "DansResim bir dans akademisi olarak başladı ve dans ile resmin aynı binayı paylaştığı bir kültür merkezine dönüştü. Girişten itibaren galeri tek ve yüksek bir boşluk olarak açılır; ziyaretçinin ilk karşılaştığı şey sanattır. Sahne ve dans stüdyoları bu boşluğun üzerinde yer alır.",
+        "Merdivenler camdan yapılmıştır ve taşıyıcı beton duvarların arasından geçer: disiplin içindeki bir balerinin adımları gibi. Binanın içindeki hareket, gösterinin bir parçası olur.",
+        "Kafe ve restoran, çocukları ders alırken ailelere hizmet verir. Stüdyolarda esnek dans zeminleri, dansçılar için de bir fizyoterapi odası bulunur. Plan genelden özele doğru akar: altta kamusal galeri ve kafe, yukarıda giderek daha özel hâle gelen çalışma mekânları.",
+      ],
+    },
+  },
+  {
+    slug: "yedimavi-residence",
+    year: 2025,
+    form: "house",
+    featured: true,
+    image: "assets/img/projects/yedimavi-residence/01.jpg",
+    gallery: shots("yedimavi-residence", [
+      ["02", "TV wall in marble and walnut", "Mermer ve ceviz TV duvarı"],
+      ["07", "Dining wall with brass inlays", "Pirinç kakmalı yemek alanı duvarı"],
+      ["03", "Living room", "Oturma odası"],
+      ["04", "Study", "Çalışma odası"],
+      ["05", "Main bedroom", "Ebeveyn yatak odası"],
+      ["06", "Bedroom", "Yatak odası"],
+    ]),
+    en: {
+      title: "YediMavi House",
+      location: "Zeytinburnu, Istanbul",
+      category: "Interior",
+      status: "Freelance commission",
+      summary: "The interior of a high-rise apartment for a married couple, built around marble, walnut and brass.",
+      body: [
+        "A freelance interior design for a residential apartment in the YediMavi towers in Zeytinburnu, designed for a married couple.",
+        "The living and dining room is organised around two feature walls: dark marble panels set into walnut, divided by thin brass inlays. The rest of the palette stays quiet, with white joinery, soft fabrics and dark timber floors, so the materials and the city view carry the space.",
+        "The project covers the living and dining room, the TV wall, a study and the bedrooms, each with built-in storage designed to keep the rooms calm.",
+      ],
+    },
+    tr: {
+      title: "YediMavi Konut Projesi",
+      location: "Zeytinburnu, İstanbul",
+      category: "İç mimari",
+      status: "Serbest proje",
+      summary: "Evli bir çift için mermer, ceviz ve pirinç üzerine kurulu bir yüksek katlı daire iç mimarisi.",
+      body: [
+        "Zeytinburnu'ndaki YediMavi konutlarında, evli bir çift için tasarlanan bir dairenin serbest iç mimari projesi.",
+        "Oturma ve yemek alanı iki vurgu duvarı etrafında kurgulandı: ceviz içine yerleştirilmiş koyu mermer paneller, ince pirinç kakmalarla bölünür. Paletin geri kalanı sakin tutuldu; beyaz dolaplar, yumuşak kumaşlar ve koyu ahşap zeminler sayesinde mekânı malzemeler ve şehir manzarası taşır.",
+        "Proje oturma ve yemek odasını, TV duvarını, çalışma odasını ve yatak odalarını kapsar; her birinde odaları sade tutmak için tasarlanmış gömme depolama alanları bulunur.",
+      ],
+    },
+  },
+  {
+    slug: "book-cafe-canakkale",
+    year: 2024,
     form: "pavilion",
     featured: true,
+    image: "assets/img/projects/book-cafe-canakkale/01.jpg",
+    gallery: shots("book-cafe-canakkale", [
+      ["05", "Physical model in bamboo and walnut", "Bambu ve cevizden fiziksel model", "wide"],
+      ["02", "Reading room toward the strait", "Boğaza bakan okuma salonu"],
+      ["03", "Ceiling slit and vertical panels", "Tavan yarığı ve dikey paneller"],
+      ["04", "Model, garden side", "Model, bahçe cephesi"],
+      ["06", "Model, exterior", "Model, dış görünüş", "wide"],
+      ["07", "Plans and concept", "Planlar ve konsept", "wide"],
+    ]),
     en: {
-      title: "Bosphorus Light Pavilion",
-      location: "Istanbul, Türkiye",
-      category: "Cultural",
-      status: "Completed",
-      area: "1,240 m²",
-      client: "Istanbul Design Foundation",
-      summary: "A floating canopy of 3,200 perforated aluminium fins that turns the light of the Bosphorus into architecture.",
-      body: [
-        "Set on the European shore between two historic waterside mansions, the pavilion is a single sweeping roof carried by twelve slender columns. Its underside is a field of perforated fins, each rotated by a script that reads the water's reflection at different hours of the day.",
-        "In the morning the canopy throws a cool, rippling light; at sunset it glows amber across the strait. The plan stays almost entirely open, so the pavilion behaves like a public square with a ceiling rather than a building with walls.",
-        "The structure was optimised computationally to use 38% less steel than a conventional space frame, and every fin can be dismantled and reused.",
-      ],
-      awards: ["Shortlisted, World Architecture Festival 2026", "Arkitera Young Architect Award 2026"],
-    },
-    tr: {
-      title: "Boğaziçi Işık Pavyonu",
-      location: "İstanbul, Türkiye",
-      category: "Kültür",
-      status: "Tamamlandı",
-      area: "1.240 m²",
-      client: "İstanbul Tasarım Vakfı",
-      summary: "Boğaz'ın ışığını mimariye dönüştüren, 3.200 delikli alüminyum kanattan oluşan yüzen bir saçak.",
-      body: [
-        "Avrupa yakasında iki tarihi yalı arasında yer alan pavyon, on iki ince kolonun taşıdığı tek ve akıcı bir çatıdan oluşur. Çatının alt yüzü, her biri suyun günün farklı saatlerindeki yansımasını okuyan bir algoritmayla döndürülmüş delikli kanatlardan meydana gelir.",
-        "Sabahları saçak serin ve dalgalı bir ışık yayar; gün batımında ise boğazın üzerinde kehribar rengiyle parlar. Plan neredeyse tamamen açık bırakıldı; böylece pavyon, duvarları olan bir binadan çok tavanı olan bir kamusal meydan gibi davranır.",
-        "Taşıyıcı sistem, geleneksel bir uzay kafes sisteme göre %38 daha az çelik kullanacak şekilde hesaplamalı olarak optimize edildi ve her kanat sökülüp yeniden kullanılabilir.",
-      ],
-      awards: ["Finalist, World Architecture Festival 2026", "Arkitera Genç Mimar Ödülü 2026"],
-    },
-  },
-  {
-    slug: "levent-helix-tower",
-    year: 2027,
-    form: "tower",
-    featured: true,
-    en: {
-      title: "Levent Helix Tower",
-      location: "Levent, Istanbul",
-      category: "Mixed-use",
-      status: "In design",
-      area: "86,000 m²",
-      client: "Confidential",
-      summary: "A 52-storey tower whose floor plates rotate 1.4° each, wrapping sky gardens around its core.",
-      body: [
-        "The Helix Tower rethinks the business-district skyscraper as a vertical neighbourhood. Each floor plate turns 1.4° relative to the one below, and the twist opens a continuous spiral of terraces planted with species native to the Marmara region.",
-        "The rotation is not decoration. Wind-tunnel studies showed that it reduces vortex shedding by almost a third, which allowed a lighter structure and a slimmer core.",
-        "Offices, a hotel and residences stack from bottom to top, linked by a public sky lobby on the 30th floor with a 360° view from the Black Sea to the Sea of Marmara.",
-      ],
-      awards: ["1st Prize, Invited Competition 2026"],
-    },
-    tr: {
-      title: "Levent Helix Kulesi",
-      location: "Levent, İstanbul",
-      category: "Karma kullanım",
-      status: "Tasarım aşamasında",
-      area: "86.000 m²",
-      client: "Gizli",
-      summary: "Kat döşemeleri her katta 1,4° dönen ve çekirdeğin etrafına gökyüzü bahçeleri saran 52 katlı bir kule.",
-      body: [
-        "Helix Kulesi, iş merkezindeki gökdeleni dikey bir mahalle olarak yeniden düşünür. Her kat döşemesi bir alttakine göre 1,4° döner ve bu dönüş, Marmara bölgesine özgü bitkilerle yeşillendirilmiş kesintisiz bir teras sarmalı oluşturur.",
-        "Bu dönüş bir süsleme değildir. Rüzgâr tüneli çalışmaları, dönüşün girdap oluşumunu neredeyse üçte bir oranında azalttığını gösterdi; bu da daha hafif bir taşıyıcı sistem ve daha ince bir çekirdek sağladı.",
-        "Ofisler, otel ve konutlar aşağıdan yukarıya doğru üst üste yerleşir ve 30. kattaki, Karadeniz'den Marmara'ya 360° manzaralı kamusal gökyüzü lobisiyle birbirine bağlanır.",
-      ],
-      awards: ["Birincilik Ödülü, Davetli Yarışma 2026"],
-    },
-  },
-  {
-    slug: "cappadocia-tuff-retreat",
-    year: 2026,
-    form: "stone",
-    featured: true,
-    en: {
-      title: "Tuff Retreat",
-      location: "Cappadocia, Türkiye",
+      title: "Café Tales, Hellespont",
+      location: "Çanakkale",
       category: "Hospitality",
-      status: "Under construction",
-      area: "4,800 m²",
-      client: "Kapadokya Hospitality Group",
-      summary: "Twenty-four suites carved into a volcanic ridge, continuing a thousand-year-old way of building.",
+      status: "Academic project, ITU",
+      summary: "A book café where the myths of the Hellespont meet today, looking over the Çanakkale strait.",
       body: [
-        "Cappadocia's houses have always been carved rather than built. Tuff Retreat follows the same logic: the suites are excavated into the ridge, and the excavated stone is cut into blocks for the few walls that rise above ground.",
-        "Thick tuff walls hold the day's heat into the cold desert night and keep the rooms cool in August, so mechanical heating and cooling are reduced to a minimum.",
-        "From the valley the hotel almost disappears. Only a line of deep window openings and a rooftop terrace for watching the morning balloons reveal it.",
+        "A book café in Çanakkale where the old stories of the Hellespont meet everyday life. The building looks over the strait on one side and opens to a garden on the other.",
+        "It is built from natural, local materials: a pine plank structure, walnut veneer on the walls and furniture, and a solid teak floor laid in chevron. A slit in the ceiling and a rhythm of vertical panels soften the sunlight so that it falls evenly on the pages.",
+        "The bookcase and the furniture were designed for the project. The physical model was made from the same family of materials, bamboo and walnut, to test the atmosphere as well as the form.",
       ],
-      awards: ["Commended, AR Emerging Architecture 2026"],
     },
     tr: {
-      title: "Tüf Otel",
-      location: "Kapadokya, Türkiye",
-      category: "Turizm",
-      status: "İnşaat aşamasında",
-      area: "4.800 m²",
-      client: "Kapadokya Turizm Grubu",
-      summary: "Volkanik bir sırta oyulmuş yirmi dört süit; bin yıllık bir yapı geleneğinin devamı.",
+      title: "Kitap Kafe, Hellespontos",
+      location: "Çanakkale",
+      category: "Ağırlama",
+      status: "Akademik proje, İTÜ",
+      summary: "Çanakkale Boğazı'na bakan, Hellespontos mitlerinin bugünle buluştuğu bir kitap kafe.",
       body: [
-        "Kapadokya'nın evleri her zaman inşa edilmekten çok oyulmuştur. Tüf Otel de aynı mantığı izler: süitler sırtın içine oyulur ve çıkan taş, zeminin üzerinde yükselen birkaç duvar için blok hâline getirilir.",
-        "Kalın tüf duvarlar gündüzün ısısını soğuk bozkır gecesine taşır ve ağustosta odaları serin tutar; böylece mekanik ısıtma ve soğutma ihtiyacı en aza iner.",
-        "Vadiden bakıldığında otel neredeyse kaybolur. Onu yalnızca bir dizi derin pencere boşluğu ve sabah balonlarını izlemek için yapılmış çatı terası belli eder.",
+        "Çanakkale'de, Hellespontos'un eski hikâyelerinin gündelik hayatla buluştuğu bir kitap kafe. Bina bir yanıyla boğaza bakar, diğer yanıyla bir bahçeye açılır.",
+        "Doğal ve yerel malzemelerle kurulur: çam kalas taşıyıcı sistem, duvarlarda ve mobilyada ceviz kaplama ve balıksırtı döşenmiş masif tik zemin. Tavandaki yarık ve dikey paneller güneş ışığını yumuşatarak sayfaların üzerine eşit biçimde düşmesini sağlar.",
+        "Kitaplık ve mobilyalar projeye özel tasarlandı. Fiziksel model de aynı malzeme ailesinden, bambu ve cevizden yapıldı; böylece yalnızca biçim değil atmosfer de denendi.",
       ],
-      awards: ["Övgü, AR Emerging Architecture 2026"],
     },
   },
   {
-    slug: "galata-archive",
-    year: 2025,
-    form: "library",
-    en: {
-      title: "Galata Archive & Library",
-      location: "Karaköy, Istanbul",
-      category: "Adaptive reuse",
-      status: "Competition",
-      area: "6,300 m²",
-      client: "Municipal competition",
-      summary: "A 19th-century warehouse turned into a public archive, with a glass reading room suspended inside.",
-      body: [
-        "The project keeps every brick of the original Karaköy warehouse and inserts a new structure that never touches the old walls. A glass reading room hangs from a steel truss above the main hall, so visitors read surrounded by the building's history.",
-        "Archive stacks occupy the climate-controlled basement, and a ramp spirals from the street up to a roof terrace facing the Golden Horn.",
-      ],
-      awards: ["Honourable Mention, National Competition 2025"],
-    },
-    tr: {
-      title: "Galata Arşiv ve Kütüphanesi",
-      location: "Karaköy, İstanbul",
-      category: "Yeniden kullanım",
-      status: "Yarışma",
-      area: "6.300 m²",
-      client: "Belediye yarışması",
-      summary: "İçinde asılı cam bir okuma salonuyla kamusal arşive dönüştürülen 19. yüzyıldan kalma bir antrepo.",
-      body: [
-        "Proje, Karaköy'deki özgün antreponun her tuğlasını korur ve eski duvarlara hiç dokunmayan yeni bir strüktür yerleştirir. Cam okuma salonu ana holün üzerindeki çelik bir kafes kirişe asılır; böylece ziyaretçiler binanın tarihiyle çevrili olarak okur.",
-        "Arşiv rafları iklimlendirilmiş bodrum katta yer alır ve bir rampa sokaktan Haliç'e bakan çatı terasına doğru sarmal biçimde yükselir.",
-      ],
-      awards: ["Mansiyon, Ulusal Yarışma 2025"],
-    },
-  },
-  {
-    slug: "aegean-wind-house",
-    year: 2026,
-    form: "house",
-    en: {
-      title: "Aegean Wind House",
-      location: "Bodrum, Türkiye",
-      category: "Residential",
-      status: "Completed",
-      area: "420 m²",
-      client: "Private",
-      summary: "A villa shaped by the meltem wind, with cantilevered rooms that frame the sea.",
-      body: [
-        "Three white volumes are stacked and shifted so that each room catches the northern meltem wind and opens onto its own view. The courtyards between them act as wind catchers, drawing cool air through the house all summer.",
-        "Local stone, lime plaster and timber shutters keep the material palette quiet and the carbon footprint low.",
-      ],
-      awards: [],
-    },
-    tr: {
-      title: "Ege Rüzgâr Evi",
-      location: "Bodrum, Türkiye",
-      category: "Konut",
-      status: "Tamamlandı",
-      area: "420 m²",
-      client: "Özel",
-      summary: "Meltemin biçimlendirdiği, denizi çerçeveleyen konsol odalara sahip bir villa.",
-      body: [
-        "Üç beyaz kütle, her oda kuzeyden esen meltemi yakalayacak ve kendi manzarasına açılacak şekilde üst üste konup kaydırıldı. Aralarındaki avlular rüzgâr yakalayıcı gibi çalışarak yaz boyunca evin içinden serin hava geçirir.",
-        "Yerel taş, kireç sıva ve ahşap kepenkler malzeme paletini sade, karbon ayak izini ise düşük tutar.",
-      ],
-      awards: [],
-    },
-  },
-  {
-    slug: "seismic-commons",
-    year: 2026,
-    form: "housing",
-    en: {
-      title: "Seismic Commons",
-      location: "Hatay, Türkiye",
-      category: "Urban",
-      status: "Research",
-      area: "12 ha masterplan",
-      client: "Graduation project, ITU",
-      summary: "A resilient housing model: low-rise, base-isolated blocks around shared courtyards.",
-      body: [
-        "Seismic Commons is a research proposal for rebuilding neighbourhoods after earthquakes. Instead of isolated towers, it proposes four- to six-storey base-isolated blocks around shared courtyards, so communities can stay together and the open courts double as safe assembly areas.",
-        "A kit of prefabricated timber-concrete hybrid parts allows fast construction while leaving room for each neighbourhood's own character.",
-      ],
-      awards: ["Graduation project, ITU Faculty of Architecture 2026"],
-    },
-    tr: {
-      title: "Sismik Ortak Alanlar",
-      location: "Hatay, Türkiye",
-      category: "Kentsel",
-      status: "Araştırma",
-      area: "12 ha master plan",
-      client: "Bitirme projesi, İTÜ",
-      summary: "Dirençli bir konut modeli: ortak avlular etrafında az katlı, sismik izolatörlü bloklar.",
-      body: [
-        "Sismik Ortak Alanlar, depremlerden sonra mahallelerin yeniden inşası için bir araştırma önerisidir. Tekil kuleler yerine ortak avlular etrafında dört ila altı katlı, sismik izolatörlü bloklar önerir; böylece topluluklar bir arada kalabilir ve açık avlular aynı zamanda güvenli toplanma alanı olur.",
-        "Prefabrik ahşap-beton hibrit parçalardan oluşan bir sistem, her mahallenin kendine özgü karakterine yer bırakarak hızlı inşa imkânı sunar.",
-      ],
-      awards: ["Bitirme projesi, İTÜ Mimarlık Fakültesi 2026"],
-    },
-  },
-  {
-    slug: "ankara-transit-hall",
-    year: 2027,
-    form: "hall",
-    en: {
-      title: "Ankara Transit Hall",
-      location: "Ankara, Türkiye",
-      category: "Infrastructure",
-      status: "Concept",
-      area: "22,000 m²",
-      client: "Concept study",
-      summary: "A high-speed rail hall under a ribbed timber vault spanning 96 metres.",
-      body: [
-        "The hall is covered by a single glulam vault made of diagonal ribs. Daylight enters through the gaps between the ribs, so the platforms are naturally lit for most of the day.",
-        "Arrivals, departures, a market hall and a bus terminal share one continuous floor, making the station a covered public street for the city.",
-      ],
-      awards: [],
-    },
-    tr: {
-      title: "Ankara Ulaşım Holü",
-      location: "Ankara, Türkiye",
-      category: "Altyapı",
-      status: "Konsept",
-      area: "22.000 m²",
-      client: "Konsept çalışması",
-      summary: "96 metre açıklığı geçen nervürlü ahşap bir tonozun altında hızlı tren holü.",
-      body: [
-        "Hol, çapraz nervürlerden oluşan tek bir tutkallı lamine ahşap tonozla örtülüdür. Gün ışığı nervürlerin arasındaki boşluklardan girer; böylece peronlar günün büyük bölümünde doğal olarak aydınlanır.",
-        "Gelişler, gidişler, bir çarşı holü ve otobüs terminali tek bir kesintisiz zemini paylaşır; istasyon, kent için üstü örtülü bir kamusal sokağa dönüşür.",
-      ],
-      awards: [],
-    },
-  },
-  {
-    slug: "fjord-timber-school",
-    year: 2026,
+    slug: "bahcekoy-organics",
+    year: 2024,
     form: "school",
+    image: "assets/img/projects/bahcekoy-organics/02.jpg",
+    gallery: shots("bahcekoy-organics", [
+      ["03", "Lounge", "Lounge", "wide"],
+      ["01", "Open kitchen", "Açık mutfak", "wide"],
+      ["05", "Cosy corner", "Sakin köşe"],
+      ["04", "Private dining", "Özel yemek alanı", "wide"],
+      ["06", "Ground and first floor plans, section A-A", "Zemin ve birinci kat planları, A-A kesiti", "wide"],
+    ]),
     en: {
-      title: "Fjord Timber School",
-      location: "Bergen, Norway",
-      category: "Education",
-      status: "Competition",
-      area: "7,900 m²",
-      client: "International competition",
-      summary: "A cross-laminated timber school whose sawtooth roofs bring northern light into every classroom.",
+      title: "Bahçeköy Organics",
+      location: "Bahçeköy, Sarıyer",
+      category: "Hospitality",
+      status: "Academic project, ITU",
+      summary: "A garden-to-plate restaurant at the social centre of the Bahçeköy plantation.",
       body: [
-        "Built entirely in cross-laminated timber, the school is organised as a small village of classroom clusters under a sawtooth roof. North-facing skylights bring soft, even light deep into the plan through the long Nordic winter.",
-        "The central learning street is both a corridor and a stepped auditorium where the whole school can gather.",
+        "The Bahçeköy plantation has a social centre of five buildings: a gardening school, an ISMEK public education centre, a library and a restaurant. This project is the café and restaurant.",
+        "It serves fine dining made with produce from the surrounding village, and the open kitchen puts that journey from garden to plate on show.",
+        "Around the main dining room the plan adds private dining, meeting rooms and quieter, cosy corners, so the building works for a family lunch, a workshop group or a long evening.",
       ],
-      awards: ["2nd Prize, International Competition 2026"],
     },
     tr: {
-      title: "Fiyort Ahşap Okulu",
-      location: "Bergen, Norveç",
-      category: "Eğitim",
-      status: "Yarışma",
-      area: "7.900 m²",
-      client: "Uluslararası yarışma",
-      summary: "Testere dişi çatılarıyla her sınıfa kuzey ışığı getiren çapraz lamine ahşap bir okul.",
+      title: "Bahçeköy Organics",
+      location: "Bahçeköy, Sarıyer",
+      category: "Ağırlama",
+      status: "Akademik proje, İTÜ",
+      summary: "Bahçeköy fidanlığının sosyal merkezinde, bahçeden tabağa bir restoran.",
       body: [
-        "Tamamen çapraz lamine ahşaptan inşa edilen okul, testere dişi bir çatı altında sınıf kümelerinden oluşan küçük bir köy gibi düzenlenmiştir. Kuzeye bakan çatı pencereleri, uzun İskandinav kışı boyunca planın derinliklerine yumuşak ve dengeli bir ışık taşır.",
-        "Merkezdeki öğrenme sokağı hem bir koridor hem de tüm okulun toplanabildiği basamaklı bir amfidir.",
+        "Bahçeköy fidanlığında beş binadan oluşan bir sosyal merkez bulunur: bahçecilik okulu, İSMEK halk eğitim merkezi, kütüphane ve restoran. Bu proje, merkezin kafe ve restoranıdır.",
+        "Çevredeki köyün ürünleriyle hazırlanan bir fine dining sunar; açık mutfak da bahçeden tabağa uzanan bu yolculuğu görünür kılar.",
+        "Ana salonun çevresinde özel yemek alanları, toplantı odaları ve daha sakin köşeler yer alır; böylece bina bir aile yemeğine, bir atölye grubuna ya da uzun bir akşama uyum sağlar.",
       ],
-      awards: ["İkincilik Ödülü, Uluslararası Yarışma 2026"],
+    },
+  },
+  {
+    slug: "water-encounters",
+    form: "pavilion",
+    image: "assets/img/projects/water-encounters/03.jpg",
+    gallery: shots("water-encounters", [
+      ["05", "Axonometric view", "Aksonometrik görünüş", "wide"],
+      ["01", "Model from above", "Modelin üstten görünüşü"],
+      ["02", "Floating pier, model", "Yüzer iskele, model"],
+      ["04", "Canoe centre, model", "Kano merkezi, model"],
+      ["06", "Site section and floating system", "Arazi kesiti ve yüzer sistem", "wide"],
+    ]),
+    en: {
+      title: "Water Encounters",
+      location: "Örnektepe, Golden Horn",
+      category: "Recreation",
+      status: "Academic project, ITU",
+      summary: "A canoe centre and social hub on the Golden Horn, with a floating pier and a sea-taxi stop.",
+      body: [
+        "A canoe centre and social centre on the shore of the Golden Horn at Örnektepe, with a stop for the sea taxi.",
+        "The pier floats. It is carried by air-filled balloons under the water, which is possible because the water of the Golden Horn is calm. The platforms step down towards the water so that people can sit, launch a canoe or simply watch.",
+        "The project was developed through physical models that test how the stepped decks meet the shore.",
+      ],
+    },
+    tr: {
+      title: "Suyla Karşılaşmalar",
+      location: "Örnektepe, Haliç",
+      category: "Rekreasyon",
+      status: "Akademik proje, İTÜ",
+      summary: "Haliç kıyısında yüzer iskelesi ve deniz taksi durağıyla bir kano ve sosyal merkez.",
+      body: [
+        "Haliç kıyısında, Örnektepe'de, deniz taksi durağı da olan bir kano merkezi ve sosyal merkez.",
+        "İskele yüzer. Suyun altındaki hava dolu balonlarla taşınır; bu, Haliç'in sakin suyu sayesinde mümkündür. Platformlar suya doğru basamaklanarak iner; insanlar oturabilir, kanosunu suya indirebilir ya da sadece izleyebilir.",
+        "Proje, basamaklı güvertelerin kıyıyla nasıl buluştuğunu deneyen fiziksel modellerle geliştirildi.",
+      ],
+    },
+  },
+  {
+    slug: "future-forms-of-living",
+    form: "housing",
+    image: "assets/img/projects/future-forms-of-living/01.jpg",
+    gallery: shots("future-forms-of-living", [
+      ["02", "Concept sketch", "Konsept eskizi"],
+      ["03", "Campsite at night", "Gece kamp alanı"],
+      ["04", "Terraces down to the sea", "Denize inen teraslar"],
+      ["06", "Unit model", "Birim modeli"],
+      ["05", "Site model", "Arazi modeli"],
+    ]),
+    en: {
+      title: "Future Forms of Living",
+      location: "Kınalıada, Istanbul",
+      category: "Residential",
+      status: "Academic project, ITU",
+      summary: "A getaway for future holidaymakers on the slopes of Kınalıada.",
+      body: [
+        "A retreat on Kınalıada that asks how people might holiday in the future. Small living units are set into the slope of the island.",
+        "Between them are campsites where guests spend the night together, and at the bottom of the slope piers reach out for the sun and the sea.",
+        "The project was worked out through hand sketches and cardboard and wood models.",
+      ],
+    },
+    tr: {
+      title: "Geleceğin Yaşam Biçimleri",
+      location: "Kınalıada, İstanbul",
+      category: "Konut",
+      status: "Akademik proje, İTÜ",
+      summary: "Kınalıada'nın yamaçlarında, geleceğin tatilcileri için bir kaçış noktası.",
+      body: [
+        "Kınalıada'da, insanların gelecekte nasıl tatil yapabileceğini soran bir kaçış noktası. Küçük yaşam birimleri adanın yamacına yerleşir.",
+        "Aralarında konukların geceyi birlikte geçirdiği kamp alanları, yamacın en altında ise güneşe ve denize uzanan iskeleler bulunur.",
+        "Proje elle çizilmiş eskizler ile karton ve ahşap modeller üzerinden geliştirildi.",
+      ],
     },
   },
 ];
@@ -315,7 +274,7 @@ window.POSTS = [
           <li>Retrofitting existing buildings is often faster and lower in carbon than demolition.</li>
           <li>Community participation keeps rebuilt neighbourhoods recognisable to the people who live there.</li>
         </ul>
-        <p>These ideas are at the centre of my graduation research, Seismic Commons, and they will stay at the centre of the studio's work.</p>`,
+        <p>For anyone training in Istanbul, these ideas belong at the start of every project, not at the end.</p>`,
     },
     tr: {
       title: "Bir sonraki deprem için tasarlamak",
@@ -334,7 +293,7 @@ window.POSTS = [
           <li>Mevcut binaların güçlendirilmesi çoğu zaman yıkımdan daha hızlı ve daha düşük karbonludur.</li>
           <li>Katılımcı süreçler, yeniden inşa edilen mahallelerin sakinleri için tanıdık kalmasını sağlar.</li>
         </ul>
-        <p>Bu fikirler bitirme araştırmam Sismik Ortak Alanlar'ın merkezinde yer alıyor ve stüdyonun çalışmalarının da merkezinde kalacak.</p>`,
+        <p>İstanbul'da mimarlık öğrenen herkes için bu fikirler her projenin sonunda değil, başında yer almalı.</p>`,
     },
   },
   {
@@ -419,7 +378,7 @@ window.POSTS = [
         <h2>Mass and time</h2>
         <p>Heavy walls delay heat. They absorb it during the day and release it at night, when it can be flushed out by cooler air. Combined with good shading, thermal mass can keep interiors comfortable for most of the year.</p>
         <h2>Learning from the vernacular</h2>
-        <p>The cave dwellings of Cappadocia, the stone houses of Mardin and the courtyard houses of the Aegean are not nostalgic references. They are tested climate technology, and they inspired projects like Tuff Retreat and the Aegean Wind House.</p>`,
+        <p>The cave dwellings of Cappadocia, the stone houses of Mardin and the courtyard houses of the Aegean are not nostalgic references. They are tested climate technology, and they still have a lot to teach us.</p>`,
     },
     tr: {
       title: "Kalın duvarların dönüşü",
@@ -431,7 +390,7 @@ window.POSTS = [
         <h2>Kütle ve zaman</h2>
         <p>Ağır duvarlar ısıyı geciktirir. Gündüz ısıyı emer, gece ise serin havayla dışarı atılabileceği zaman geri verir. İyi bir gölgelemeyle birleştiğinde ısıl kütle, iç mekânları yılın büyük bölümünde konforlu tutabilir.</p>
         <h2>Yerel mimariden öğrenmek</h2>
-        <p>Kapadokya'nın kaya evleri, Mardin'in taş evleri ve Ege'nin avlulu evleri nostaljik referanslar değildir. Bunlar denenmiş iklim teknolojileridir ve Tüf Otel ile Ege Rüzgâr Evi gibi projelere ilham verdiler.</p>`,
+        <p>Kapadokya'nın kaya evleri, Mardin'in taş evleri ve Ege'nin avlulu evleri nostaljik referanslar değildir. Bunlar denenmiş iklim teknolojileridir ve bize hâlâ öğretecekleri çok şey var.</p>`,
     },
   },
   {
@@ -448,7 +407,7 @@ window.POSTS = [
         <h2>More than carbon</h2>
         <p>Old warehouses, factories and depots also hold the memory of a city. Turning them into libraries, schools or housing keeps that memory alive while giving the building a new life.</p>
         <blockquote>Reuse is not the conservative option. It is often the most radical one.</blockquote>
-        <p>Istanbul's waterfronts are full of such buildings. The Galata Archive proposal is one attempt to show what they could become.</p>`,
+        <p>Istanbul's waterfronts are full of such buildings. Each one is a chance to show what they could become.</p>`,
     },
     tr: {
       title: "En yeşil bina, zaten ayakta olandır",
@@ -460,7 +419,7 @@ window.POSTS = [
         <h2>Karbondan fazlası</h2>
         <p>Eski antrepolar, fabrikalar ve depolar aynı zamanda kentin hafızasını taşır. Onları kütüphaneye, okula ya da konuta dönüştürmek, binaya yeni bir hayat verirken bu hafızayı da canlı tutar.</p>
         <blockquote>Yeniden kullanım muhafazakâr seçenek değildir. Çoğu zaman en radikal olanıdır.</blockquote>
-        <p>İstanbul'un kıyıları bu tür binalarla dolu. Galata Arşivi önerisi, bu binaların neye dönüşebileceğini göstermeye yönelik bir deneme.</p>`,
+        <p>İstanbul'un kıyıları bu tür binalarla dolu. Her biri, neye dönüşebileceklerini göstermek için bir fırsat.</p>`,
     },
   },
   {
@@ -480,7 +439,7 @@ window.POSTS = [
           <li>Designing the section as carefully as the plan.</li>
           <li>Respecting the city as the real client.</li>
         </ul>
-        <p>This journal will follow the studio's work, competitions and the ideas shaping architecture today. Thank you for reading.</p>`,
+        <p>This journal will follow my work, new projects and the ideas shaping architecture today. Thank you for reading.</p>`,
     },
     tr: {
       title: "Taşkışla'dan notlar: 2026 mezuniyeti",
@@ -495,7 +454,7 @@ window.POSTS = [
           <li>Kesiti de plan kadar özenle tasarlamak.</li>
           <li>Kenti asıl işveren olarak görmek.</li>
         </ul>
-        <p>Bu günlük; stüdyonun çalışmalarını, yarışmaları ve bugün mimarlığı biçimlendiren fikirleri takip edecek. Okuduğunuz için teşekkürler.</p>`,
+        <p>Bu günlük; çalışmalarımı, yeni projeleri ve bugün mimarlığı biçimlendiren fikirleri takip edecek. Okuduğunuz için teşekkürler.</p>`,
     },
   },
 ];

@@ -22,7 +22,7 @@ Website of architect **Berk Nazlım**: a static site (plain HTML, CSS and JavaSc
 
 Almost everything you will want to change lives in **`assets/js/data.js`**:
 
-- `PROJECTS`: the portfolio. The current projects are placeholders. Replace them with Berk's real work. To use real photos, put them in `assets/img/` and add `image: "assets/img/…jpg"` (cover) and `gallery: ["…", "…", "…"]` to a project. Without images, a generated architectural drawing is shown.
+- `PROJECTS`: the portfolio, taken from Berk's PDF portfolio. Each project's photos are in `assets/img/projects/<slug>/` as `NN.jpg` (1600px wide) and `NN-sm.jpg` (800px, used on phones). `image` is the cover and `gallery` lists the other pictures with English and Turkish captions; add `"wide"` to make a picture span the full width. Fields left out (year, area, client) are simply not shown. After adding or removing a project, run `python3 tools/build.py` so the sitemap is updated.
 - `POSTS`: journal articles. Add a new object with `slug`, `title`, `date` (YYYY-MM-DD), `category`, `excerpt` and `body` (HTML). Posts are sorted by date automatically, newest first.
 - `SITE`: email and social links used by the contact form.
 
@@ -38,7 +38,7 @@ Don't edit the generated `.html` files by hand, since the next build overwrites 
 
 ## Contact form
 
-The form opens the visitor's email app with a prefilled message to `hello@berknazlim.com`. To receive messages without an email app, connect a form service such as [Formspree](https://formspree.io) and point the form's `action` at it.
+The form opens the visitor's email app with a prefilled message to `nazlimberk@gmail.com`. To receive messages without an email app, connect a form service such as [Formspree](https://formspree.io) and point the form's `action` at it.
 
 ## Run locally
 
