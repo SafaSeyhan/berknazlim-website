@@ -80,7 +80,10 @@ def jsonld(lang):
         "founder": {"@type": "Person", "name": "Berk Nazlım", "jobTitle": "İç Mimar" if lang == "tr" else "Interior Architect", "sameAs": [LINKEDIN],
                     "alumniOf": {"@type": "CollegeOrUniversity", "name": "İstanbul Teknik Üniversitesi" if lang == "tr" else "Istanbul Technical University"}},
     }
-    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
+    data["logo"] = DOMAIN + "/icon-512.png"
+    # WebSite lets Google show "Berk Nazlım" as the site name in search results
+    site = {"@context": "https://schema.org", "@type": "WebSite", "name": "Berk Nazlım", "url": DOMAIN + "/"}
+    return '<script type="application/ld+json">' + json.dumps([site, data], ensure_ascii=False) + "</script>"
 
 
 def head(lang, page, title, desc):
@@ -113,7 +116,10 @@ def head(lang, page, title, desc):
 <meta property="og:image" content="{DOMAIN}/assets/og.png">
 <meta property="og:locale" content="{'tr_TR' if lang == 'tr' else 'en_GB'}">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{r}favicon.ico" sizes="48x48">
 <link rel="icon" href="{r}favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{r}favicon-96x96.png" sizes="96x96" type="image/png">
+<link rel="manifest" href="{r}site.webmanifest">
 <link rel="apple-touch-icon" href="{r}apple-touch-icon.png">
 {jsonld(lang) if page == "index.html" else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -596,7 +602,7 @@ for lang in ("en", "tr"):
 # 404 page (GitHub Pages serves it for any unknown URL, so links are absolute)
 nf = head("en", "index.html", "Page not found — Berk Nazlım", "Page not found.").replace(
     "if(!localStorage", "if(false&&!localStorage")
-nf = nf.replace('href="favicon', 'href="/favicon').replace('href="assets/', 'href="/assets/').replace('href="apple-touch', 'href="/apple-touch')
+nf = nf.replace('href="favicon', 'href="/favicon').replace('href="site.webmanifest', 'href="/site.webmanifest').replace('href="assets/', 'href="/assets/').replace('href="apple-touch', 'href="/apple-touch')
 nf = "\n".join(l for l in nf.split("\n") if not l.startswith(('<link rel="canonical"', '<link rel="alternate"', '<script type="application/ld+json"', '<meta property="og:url"')))
 nf = nf.replace('<meta name="color-scheme"', '<meta name="robots" content="noindex">\n<meta name="color-scheme"')
 nf += '''<body data-page="404"><main><section class="notfound"><div class="wrap">
