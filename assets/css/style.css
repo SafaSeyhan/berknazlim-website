@@ -525,3 +525,14 @@ h2 { font-size: clamp(30px, 3.52vw, 49px); }
 .statement { font-size: clamp(22px, 2.38vw, 33px); }
 body { font-size: 16px; font-weight: 300; }
 .lead { font-weight: 300; }
+
+/* ---------- Home: Approach opens the page, with Berk's portrait beside it ---------- */
+.intro-first { padding-top: clamp(48px, 7vw, 96px); }
+.intro-side { display: flex; flex-direction: column; gap: 24px; }
+.intro-portrait { margin: 0; max-width: 360px; }
+.intro-portrait .media { aspect-ratio: 4 / 5; }
+.intro-portrait img { filter: grayscale(1); }
+h1.statement { margin: 0 0 28px; }
+@media (max-width: 820px) {
+  .intro-portrait { max-width: 300px; }
+}

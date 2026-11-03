@@ -212,21 +212,10 @@ def write(lang, page, title, desc, slug, body, with_cta=True):
 
 def home(lang):
     if lang == "en":
-        return '''<section class="hero"><div class="wrap">
-  <div class="hero-top">
-    <div><span class="label">Interior architecture · Design — Istanbul</span>
-    <h1>Spaces shaped by material, light and the people who use them.</h1></div>
-    <div class="hero-side"><p>Berk Nazlım is an Istanbul-based designer and interior architect, and a 2026 graduate of Istanbul Technical University. His work moves between interiors, cultural buildings and hand-made models.</p>
-    <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">View projects <span class="arrow">→</span></a><a class="btn" href="about.html">About</a></div></div>
-  </div>
-  <a href="project.html?p=ortakoy-dansresim" class="hero-figure"><figure><div class="media" id="hero-art"></div>
-  <figcaption><span>Ortaköy DansResim, Istanbul</span><span class="mono">2025</span></figcaption></figure></a>
-</div></section>
-
-<section class="section"><div class="wrap intro">
-  <div><span class="label">01 — Approach</span></div>
+        return '''<section class="section intro-first"><div class="wrap intro">
+  <div class="intro-side"><span class="label">01 — Approach</span><figure class="intro-portrait"><div class="media"><img src="assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536" fetchpriority="high"></div></figure></div>
   <div>
-    <p class="statement reveal">Good architecture reads its site, respects its city and gives something back to the people who use it.</p>
+    <h1 class="statement reveal">Good architecture reads its site, respects its city and gives something back to the people who use it.</h1>
     <p class="lead reveal">Trained in the Department of Interior Architecture at ITU's Faculty of Architecture, Berk has worked on construction sites and in design offices since 2023, from a hotel lobby in Maçka to an apartment in Zeytinburnu. Each project starts from one clear idea and carries it down to the material, the furniture and the detail.</p>
     <a class="link reveal" href="about.html">More about Berk →</a>
     <div class="stats">
@@ -244,35 +233,14 @@ def home(lang):
 </div></section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Services</span><h2>What I do</h2></div><a class="link" href="services.html">All services →</a></div>
-  <div class="services-list">
-    <div class="service reveal"><span class="n mono">01</span><h3>Interior architecture</h3><p>Homes, cafés and restaurants planned as one idea, from the layout to the materials, lighting and furniture.</p></div>
-    <div class="service reveal"><span class="n mono">02</span><h3>Architectural design</h3><p>Concept and schematic design for cultural, hospitality and leisure buildings.</p></div>
-    <div class="service reveal"><span class="n mono">03</span><h3>Visualisation &amp; models</h3><p>Renders, presentation drawings and physical models that show a space before it is built.</p></div>
-    <div class="service reveal"><span class="n mono">04</span><h3>Site &amp; construction</h3><p>Renovation and repair work followed on site, with material and detail decisions made alongside the builders.</p></div>
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">04 — Journal</span><h2>News &amp; ideas in architecture</h2></div><a class="link" href="journal.html">Read the journal →</a></div>
+  <div class="section-head"><div><span class="label">03 — Journal</span><h2>News &amp; ideas in architecture</h2></div><a class="link" href="journal.html">Read the journal →</a></div>
   <div class="posts-grid" id="latest-posts"></div>
 </div></section>
 '''
-    return '''<section class="hero"><div class="wrap">
-  <div class="hero-top">
-    <div><span class="label">İç mimarlık · Tasarım — İstanbul</span>
-    <h1>Malzeme, ışık ve onu kullanan insanlarla biçimlenen mekânlar.</h1></div>
-    <div class="hero-side"><p>Berk Nazlım, İstanbul merkezli bir tasarımcı ve iç mimar; 2026 yılında İstanbul Teknik Üniversitesi'nden mezun oldu. Çalışmaları iç mekânlar, kültür yapıları ve elle yapılan maketler arasında ilerliyor.</p>
-    <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">Projeleri gör <span class="arrow">→</span></a><a class="btn" href="about.html">Hakkında</a></div></div>
-  </div>
-  <a href="project.html?p=ortakoy-dansresim" class="hero-figure"><figure><div class="media" id="hero-art"></div>
-  <figcaption><span>Ortaköy DansResim, İstanbul</span><span class="mono">2025</span></figcaption></figure></a>
-</div></section>
-
-<section class="section"><div class="wrap intro">
-  <div><span class="label">01 — Yaklaşım</span></div>
+    return '''<section class="section intro-first"><div class="wrap intro">
+  <div class="intro-side"><span class="label">01 — Yaklaşım</span><figure class="intro-portrait"><div class="media"><img src="../assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536" fetchpriority="high"></div></figure></div>
   <div>
-    <p class="statement reveal">İyi mimarlık yerini okur, kentine saygı duyar ve onu kullanan insanlara bir şey geri verir.</p>
+    <h1 class="statement reveal">İyi mimarlık yerini okur, kentine saygı duyar ve onu kullanan insanlara bir şey geri verir.</h1>
     <p class="lead reveal">İTÜ Mimarlık Fakültesi İç Mimarlık Bölümü'nde eğitim alan Berk, 2023'ten bu yana şantiyelerde ve tasarım ofislerinde çalışıyor: Maçka'daki bir otel lobisinden Zeytinburnu'ndaki bir daireye kadar. Her proje tek ve net bir fikirle başlıyor ve bu fikri malzemeye, mobilyaya ve detaya kadar taşıyor.</p>
     <a class="link reveal" href="about.html">Berk hakkında daha fazlası →</a>
     <div class="stats">
@@ -290,17 +258,7 @@ def home(lang):
 </div></section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Hizmetler</span><h2>Neler yapıyorum</h2></div><a class="link" href="services.html">Tüm hizmetler →</a></div>
-  <div class="services-list">
-    <div class="service reveal"><span class="n mono">01</span><h3>İç mimarlık</h3><p>Plan kurgusundan malzemeye, aydınlatmaya ve mobilyaya kadar tek bir fikir olarak tasarlanan evler, kafeler ve restoranlar.</p></div>
-    <div class="service reveal"><span class="n mono">02</span><h3>Mimari tasarım</h3><p>Kültür, ağırlama ve rekreasyon yapıları için konsept ve avan proje.</p></div>
-    <div class="service reveal"><span class="n mono">03</span><h3>Görselleştirme ve maket</h3><p>Bir mekânı inşa edilmeden önce gösteren görseller, sunum çizimleri ve fiziksel maketler.</p></div>
-    <div class="service reveal"><span class="n mono">04</span><h3>Şantiye ve uygulama</h3><p>Sahada takip edilen tadilat ve onarım işleri; malzeme ve detay kararları ustalarla birlikte.</p></div>
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">04 — Günlük</span><h2>Mimarlıkta haberler ve fikirler</h2></div><a class="link" href="journal.html">Günlüğü oku →</a></div>
+  <div class="section-head"><div><span class="label">03 — Günlük</span><h2>Mimarlıkta haberler ve fikirler</h2></div><a class="link" href="journal.html">Günlüğü oku →</a></div>
   <div class="posts-grid" id="latest-posts"></div>
 </div></section>
 '''
