@@ -125,7 +125,7 @@ def head(lang, page, title, desc):
 {jsonld(lang) if page == "index.html" else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..600;1,300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}assets/css/style.css">
 </head>
 '''
@@ -215,7 +215,7 @@ def home(lang):
         return '''<section class="hero"><div class="wrap">
   <div class="hero-top">
     <div><span class="label">Interior architecture · Design — Istanbul</span>
-    <h1>Spaces shaped by <em>material</em>, light and the people who use them.</h1></div>
+    <h1>Spaces shaped by material, light and the people who use them.</h1></div>
     <div class="hero-side"><p>Berk Nazlım is an Istanbul-based designer and interior architect, and a 2026 graduate of Istanbul Technical University. His work moves between interiors, cultural buildings and hand-made models.</p>
     <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">View projects <span class="arrow">→</span></a><a class="btn" href="about.html">About</a></div></div>
   </div>
@@ -261,7 +261,7 @@ def home(lang):
     return '''<section class="hero"><div class="wrap">
   <div class="hero-top">
     <div><span class="label">İç mimarlık · Tasarım — İstanbul</span>
-    <h1><em>Malzeme</em>, ışık ve onu kullanan insanlarla biçimlenen mekânlar.</h1></div>
+    <h1>Malzeme, ışık ve onu kullanan insanlarla biçimlenen mekânlar.</h1></div>
     <div class="hero-side"><p>Berk Nazlım, İstanbul merkezli bir tasarımcı ve iç mimar; 2026 yılında İstanbul Teknik Üniversitesi'nden mezun oldu. Çalışmaları iç mekânlar, kültür yapıları ve elle yapılan maketler arasında ilerliyor.</p>
     <div class="hero-actions"><a class="btn btn-solid" href="portfolio.html">Projeleri gör <span class="arrow">→</span></a><a class="btn" href="about.html">Hakkında</a></div></div>
   </div>

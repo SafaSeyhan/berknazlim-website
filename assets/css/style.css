@@ -28,9 +28,10 @@
   --max: 1320px;
   --gutter: clamp(16px, 4vw, 56px);
   --header-h: 72px;
-  --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
-  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* one geometric sans (Montserrat) throughout */
+  --serif: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --sans: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Montserrat", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
@@ -485,3 +486,42 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   .js:not(.no-reveal) .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- Futura-style type: proportions tuned for a wide geometric face ---------- */
+h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.08; }
+h1 { font-size: clamp(40px, 6vw, 88px); }
+h2 { font-size: clamp(32px, 4vw, 56px); }
+h3 { font-size: clamp(22px, 1.9vw, 28px); }
+h1 em, h2 em { font-weight: 300; }
+.statement { font-size: clamp(24px, 2.7vw, 38px); line-height: 1.25; letter-spacing: -0.01em; }
+.pd-body p.statement { font-size: clamp(22px, 2.2vw, 32px); }
+.stat .num { font-size: clamp(40px, 4.4vw, 64px); font-weight: 300; }
+.service h3 { font-size: clamp(24px, 2.4vw, 34px); }
+.post-card h3 { font-size: clamp(21px, 1.7vw, 26px); }
+.article-head h1 { font-size: clamp(34px, 4.6vw, 64px); }
+.article h2 { font-size: clamp(24px, 2.4vw, 32px); }
+.article blockquote { font-size: clamp(22px, 2.2vw, 30px); }
+.cta h2 { font-size: clamp(38px, 5.4vw, 80px); }
+.index-row .t { font-size: clamp(19px, 1.7vw, 24px); }
+.step .n { font-weight: 300; }
+.brand-name { font-size: 21px; font-weight: 400; letter-spacing: 0.01em; }
+.mobile-menu li a { font-size: 30px; }
+.label, .brand small, .footer-grid h5 { letter-spacing: 0.14em; font-weight: 400; }
+.mono { letter-spacing: 0.06em; }
+.notfound h1 { font-weight: 300; }
+/* lighter weights: Futura reads best thin */
+body { font-weight: 350; }
+h1, h2, h3, h4, .statement, .stat .num, .step .n, .mobile-menu li a, .index-row .t, .article blockquote { font-weight: 300; }
+h3, h4 { font-weight: 350; }
+.btn, .link { font-weight: 400; }
+.tl h4 { font-weight: 450; }
+.award .t { font-weight: 400; }
+strong, b { font-weight: 500; }
+
+/* Montserrat is a wide face, so display sizes come down a little */
+h1 { font-size: clamp(36px, 5.28vw, 77px); }
+h2 { font-size: clamp(30px, 3.52vw, 49px); }
+.cta h2 { font-size: clamp(34px, 4.75vw, 70px); }
+.statement { font-size: clamp(22px, 2.38vw, 33px); }
+body { font-size: 16px; font-weight: 300; }
+.lead { font-weight: 300; }
