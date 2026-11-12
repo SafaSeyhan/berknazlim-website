@@ -201,82 +201,71 @@
     });
   }
 
-  /* Featured projects as a walk-through: the drawings hang left and right of a
-     corridor, scrolling walks forward, and each drawing turns into the photo
-     as you reach it. */
+  /* Featured projects side by side. On phones the visitor swipes the row. On desktop the
+     section holds still while scrolling moves the row past; each card turns slightly in 3D
+     and changes from line drawing to photo as it reaches the middle. Cards never overlap. */
   function initWalk() {
     const sec = $("[data-walk]"), world = $("#featured");
     const feat = projects.filter((p) => p.featured).slice(0, 3);
-    const n = feat.length + 1; // + the "all projects" door at the end
+    const n = feat.length + 1; // + the "all projects" card at the end
     world.innerHTML = feat.map((p, i) => `<a class="walk-card" href="${projectUrl(p)}">
-        <div class="media drawn">${drawing(p.image, p.title, "(max-width: 820px) 90vw, 760px")}</div>
+        <div class="media drawn">${drawing(p.image, p.title, "(max-width: 820px) 90vw, 900px")}</div>
         <div class="walk-info"><span class="n">${pad(i + 1)}</span><h3>${esc(p.title)}</h3><p>${esc(p.location)}, ${esc(p.category)}${p.year ? ", " + esc(p.year) : ""}</p></div></a>`).join("")
-      + `<a class="walk-card walk-end" href="portfolio.html"><span>${esc(world.dataset.all)}</span>${ARROW}<small>${projects.length}</small></a>`
-      + `<div class="walk-floor" aria-hidden="true">${"<i></i>".repeat(14)}<b></b><b></b><b></b></div>`;
-    const cards = $$(".walk-card", world), floor = $(".walk-floor", world), lines = $$("i", floor);
+      + `<a class="walk-card walk-end" href="portfolio.html"><span>${esc(world.dataset.all)}</span>${ARROW}<small>${projects.length}</small></a>`;
+    const cards = $$(".walk-card", world);
     const count = $("#walk-count"), bar = $(".walk-bar i", sec);
+    const show = (p, k) => {
+      if (count) count.textContent = k < feat.length ? `${pad(k + 1)} / ${pad(feat.length)}` : "";
+      if (bar) bar.style.transform = `scaleX(${Math.max(p, 1 / n).toFixed(3)})`;
+    };
 
-    // phones and tablets: a swipe gallery the browser scrolls natively, which stays smooth on any device
-    if (!reduce && matchMedia("(max-width: 820px), (pointer: coarse)").matches) {
+    if (reduce || matchMedia("(max-width: 820px), (pointer: coarse)").matches) {
       sec.classList.add("swipe");
-      const shown = cards.slice(0, feat.length);
-      if ("IntersectionObserver" in window) {
-        // as before: a drawing turns into its photo only while the whole picture is on screen
+      const shown = cards.slice(0, feat.length).map((c) => $(".media", c));
+      if (reduce || !("IntersectionObserver" in window)) shown.forEach((m) => m.classList.add("photo"));
+      else {
+        // a drawing turns into its photo only while the whole picture is on screen
         const pio = new IntersectionObserver((en) => en.forEach((e) => e.target.classList.toggle("photo", e.intersectionRatio >= 0.95)), { threshold: [0, 0.95] });
-        shown.forEach((c) => pio.observe($(".media", c)));
-      } else shown.forEach((c) => $(".media", c).classList.add("photo"));
+        shown.forEach((m) => pio.observe(m));
+      }
       let wait = false;
       const mark = () => {
         wait = false;
         const max = world.scrollWidth - world.clientWidth;
         const p = max > 0 ? clamp(world.scrollLeft / max, 0, 1) : 0;
-        const k = Math.round(p * (n - 1));
-        if (count) count.textContent = k < feat.length ? `${pad(k + 1)} / ${pad(feat.length)}` : "";
-        if (bar) bar.style.transform = `scaleX(${Math.max(p, 1 / n).toFixed(3)})`;
+        show(p, Math.round(p * (n - 1)));
       };
       world.addEventListener("scroll", () => { if (!wait) { wait = true; requestAnimationFrame(mark); } }, { passive: true });
       mark();
       return;
     }
-    if (reduce || !window.CSS || !CSS.supports("transform-style", "preserve-3d")) {
-      sec.classList.add("flat");
-      cards.forEach((c) => c.style.setProperty("--mix", 1));
-      return;
-    }
-    const D = 1300, START = 420, GAP = 420;
-    sec.style.height = `${100 + n * 95}vh`;
+
+    sec.classList.add("pin");
+    let centres = [], travel = 0, vw = 0;
+    const measure = () => {
+      vw = window.innerWidth;
+      centres = cards.map((c) => c.offsetLeft + c.offsetWidth / 2);
+      travel = Math.max(0, centres[n - 1] - centres[0]);
+      sec.style.height = `${window.innerHeight + travel * 1.15}px`;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
     onScroll.push(() => {
-      const r = sec.getBoundingClientRect(), vw = window.innerWidth;
+      const r = sec.getBoundingClientRect();
       if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
       const p = clamp(-r.top / Math.max(1, r.height - window.innerHeight), 0, 1);
-      const cam = p * ((n - 1) * D + START - 120);
-      const wide = vw > 820;
-      const side = wide ? Math.min(vw * 0.2, 330) : vw * 0.03;
-      const turn = wide ? 17 : 5;
+      const x = p * travel;
+      world.style.transform = `translate3d(${(-x).toFixed(1)}px,0,0)`;
       let nearest = 0, best = 1e9;
       cards.forEach((c, i) => {
-        const rel = -i * D - START + cam;
-        const last = i === n - 1;
-        const s = last ? 0 : i % 2 ? 1 : -1;
-        // cards swing a little flatter as you reach them, so they are easy to read
-        const flat = smooth(-900, -100, rel);
-        c.style.transform = `translate3d(${(s * side * (1 - flat * 0.45)).toFixed(1)}px,0,${rel.toFixed(1)}px) rotateY(${(-s * turn * (1 - flat * 0.6)).toFixed(2)}deg)`;
-        const op = Math.min(smooth(-4300, -2300, rel) * 0.85 + 0.15 * smooth(-4600, -4300, rel), 1 - smooth(20, 260, rel));
-        c.style.opacity = op.toFixed(3);
-        c.style.visibility = op < 0.01 ? "hidden" : "visible";
-        c.style.pointerEvents = rel > 80 || rel < -1300 ? "none" : "auto";
-        c.style.setProperty("--mix", smooth(-1150, -430, rel).toFixed(3));
-        c.style.zIndex = String(100 - i);
-        const d = Math.abs(rel + 250);
-        if (d < best) { best = d; nearest = i; }
+        const d = (centres[i] - centres[0] - x) / vw; // 0 when the card is in the middle of the screen
+        const a = Math.abs(d);
+        c.style.transform = `rotateY(${clamp(-d * 26, -20, 20).toFixed(2)}deg) scale(${(1 - Math.min(a, 1) * 0.1).toFixed(4)})`;
+        c.style.setProperty("--mix", (1 - smooth(0.1, 0.42, a)).toFixed(3));
+        if (a < best) { best = a; nearest = i; }
       });
-      lines.forEach((l, i) => {
-        const z = 300 - i * GAP + (cam % GAP);
-        l.style.transform = `translate3d(-50%,0,${z.toFixed(1)}px) rotateX(90deg)`;
-        l.style.opacity = (smooth(-5200, -2600, z) * (1 - smooth(-100, 300, z))).toFixed(3);
-      });
-      if (count) count.textContent = nearest < feat.length ? `${pad(nearest + 1)} / ${pad(feat.length)}` : "";
-      if (bar) bar.style.transform = `scaleX(${p.toFixed(4)})`;
+      show(p, nearest);
     });
   }
 
@@ -522,7 +511,7 @@
   const models = {};
   const hosts = $$("[data-model]");
   if (hosts.length) {
-    import(new URL(base + "assets/js/model.js", location.href).href)
+    import(new URL(base + "assets/js/model.js?v=" + (root.dataset.v || ""), location.href).href)
       .then((m) => {
         hosts.forEach((h) => { models[h.dataset.model] = m.mount(h, { mode: h.dataset.model }); });
         queue();

@@ -331,15 +331,25 @@ figcaption { display: flex; justify-content: space-between; gap: 16px; padding-t
 .stat .num { font-size: clamp(44px, 5.4vw, 84px); font-weight: 300; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 .stat p { margin: 12px 0 0; font-size: 14px; color: var(--muted); line-height: 1.4; }
 
-/* ---------- Home: walk through the featured projects ---------- */
-.walk { position: relative; background: var(--bg-2); }
-.walk-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; flex-direction: column; --cw: min(54vw, 860px, (100svh - 270px) * 1.5); }
-.walk-head { position: relative; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding-top: calc(var(--header-h) + 14px); }
-.walk-head h2 { font-size: clamp(26px, 3vw, 42px); }
-.walk-stage { position: relative; flex: 1; perspective: 1100px; perspective-origin: 50% 44%; }
-.walk-world { position: absolute; inset: 0; transform-style: preserve-3d; }
-.walk-card { position: absolute; left: 50%; top: 50%; width: var(--cw); margin-left: calc(var(--cw) / -2); margin-top: calc(var(--cw) * -0.34 - 44px); will-change: transform, opacity; backface-visibility: hidden; }
-.walk-card .media { box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.35); outline: 1px solid var(--line); }
+/* ---------- Home: featured projects, side by side ---------- */
+/* Without any script this is a plain row that scrolls sideways, so cards can never sit on top of
+   each other. main.js then picks one of two modes:
+   .swipe (phones, tablets, reduced motion): the visitor swipes the row.
+   .pin   (desktop): the section holds still while scrolling moves the row past, and each
+          card turns slightly in 3D and changes from drawing to photo as it reaches the middle. */
+.walk { position: relative; background: var(--bg-2); padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 7vw, 90px); --cw: min(84vw, 520px); }
+.walk-sticky { display: flex; flex-direction: column; }
+.walk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: clamp(24px, 3vw, 40px); }
+.walk-head h2 { font-size: clamp(24px, 3vw, 42px); }
+.walk-world { display: flex; align-items: flex-start; gap: clamp(14px, 4vw, 64px); padding: 0 var(--gutter) 6px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+.walk-world::-webkit-scrollbar { display: none; }
+.walk-card { position: relative; display: block; flex: 0 0 var(--cw); width: var(--cw); scroll-snap-align: start; }
+.walk-card .media { outline: 1px solid var(--line); }
+.walk-card .media.drawn > img, .walk-card .sketch { transition: opacity 0.9s var(--ease); }
+.walk-card .media.drawn > img { opacity: 0; }
+.walk-card .sketch { opacity: 1; }
+.walk-card .media.photo > img { opacity: 1; }
+.walk-card .media.photo > .sketch { opacity: 0; }
 .walk-info { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; align-items: baseline; padding-top: 16px; }
 .walk-info .n { font-size: 13px; font-weight: 500; color: var(--accent); }
 .walk-info h3 { font-size: clamp(22px, 2.3vw, 34px); font-weight: 300; letter-spacing: -0.02em; }
@@ -348,42 +358,22 @@ figcaption { display: flex; justify-content: space-between; gap: 16px; padding-t
 .walk-end:hover { background: var(--text); color: var(--bg); }
 .walk-end .arrow { width: 1em; height: 1em; }
 .walk-end small { position: absolute; top: 18px; right: 22px; font-size: 14px; color: var(--accent); letter-spacing: 0; }
-.walk-floor { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: translateY(calc(var(--cw) * 0.34 + 96px)); pointer-events: none; }
-.walk-floor i { position: absolute; left: 0; top: 0; width: 3400px; height: 1px; background: var(--line-2); will-change: transform, opacity; }
-.walk-floor b { position: absolute; left: 0; top: 0; width: 5600px; height: 1px; transform-origin: 0 0; background: linear-gradient(to right, var(--line-2), transparent 85%); transform: translate3d(0, 0, 320px) rotateY(90deg); }
-.walk-floor b:nth-of-type(1) { transform: translate3d(-760px, 0, 320px) rotateY(90deg); }
-.walk-floor b:nth-of-type(3) { transform: translate3d(760px, 0, 320px) rotateY(90deg); }
-.walk-floor b:nth-of-type(2) { background: linear-gradient(to right, var(--brass), transparent 80%); }
-.walk-foot { position: relative; z-index: 3; display: flex; align-items: center; gap: 20px; padding-bottom: 26px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.walk-foot { display: flex; align-items: center; gap: 20px; padding-top: 24px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .walk-count { min-width: 5.5em; }
 .walk-bar { flex: 1; height: 1px; background: var(--line); }
 .walk-bar i { display: block; height: 1px; background: var(--brass); transform-origin: 0 50%; transform: scaleX(0); }
-/* phones and tablets: swipe sideways through the projects (main.js adds .swipe) */
-.walk.swipe { padding: clamp(64px, 12vw, 110px) 0 clamp(48px, 9vw, 80px); }
-.walk.swipe .walk-sticky { position: static; height: auto; overflow: visible; }
-.walk.swipe .walk-head { padding-top: 0; margin-bottom: 26px; }
-.walk.swipe .walk-stage { perspective: none; flex: none; }
-.walk.swipe .walk-world { position: static; display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); padding: 0 var(--gutter) 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-.walk.swipe .walk-world::-webkit-scrollbar { display: none; }
-.walk.swipe .walk-card { position: static; flex: 0 0 min(84vw, 520px); width: auto; margin: 0; scroll-snap-align: start; will-change: auto; }
-.walk.swipe .walk-card .media { box-shadow: none; }
-.walk.swipe .walk-card .media.drawn > img, .walk.swipe .walk-card .sketch { transition: opacity 0.9s var(--ease); }
-.walk.swipe .walk-card .media.drawn > img { opacity: 0; }
-.walk.swipe .walk-card .sketch { opacity: 1; }
-.walk.swipe .walk-card .media.photo > img { opacity: 1; }
-.walk.swipe .walk-card .media.photo > .sketch { opacity: 0; }
-.walk.swipe .walk-info h3 { font-size: 24px; }
-.walk.swipe .walk-end { align-self: flex-start; font-size: 28px; }
-.walk.swipe .walk-floor { display: none; }
-.walk.swipe .walk-foot { padding: 22px var(--gutter) 0; }
-/* no 3D (reduced motion): a plain row */
-.walk.flat { padding: clamp(72px, 10vw, 150px) 0; }
-.walk.flat .walk-sticky { position: static; height: auto; overflow: visible; }
-.walk.flat .walk-head { padding-top: 0; margin-bottom: 40px; }
-.walk.flat .walk-stage { perspective: none; }
-.walk.flat .walk-world { position: static; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-.walk.flat .walk-card { position: static; width: auto; margin: 0; }
-.walk.flat .walk-floor, .walk.flat .walk-foot { display: none; }
+
+.walk.pin { padding: 0; --cw: min(56vw, 900px, (100svh - 310px) * 1.5); }
+.walk.pin .walk-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.walk.pin .walk-head { padding-top: calc(var(--header-h) + 14px); margin-bottom: 0; }
+.walk.pin .walk-stage { flex: 1; min-height: 0; display: flex; align-items: center; perspective: 1800px; }
+.walk.pin .walk-world { overflow: visible; scroll-snap-type: none; width: max-content; padding: 0 calc(50vw - var(--cw) / 2); gap: clamp(40px, 6vw, 110px); will-change: transform; transform-style: preserve-3d; }
+.walk.pin .walk-card { will-change: transform; }
+.walk.pin .walk-card .media.drawn > img, .walk.pin .walk-card .sketch { transition: none; }
+.walk.pin .walk-card .media.drawn > img { opacity: var(--mix, 0); }
+.walk.pin .walk-card .sketch { opacity: calc(1 - var(--mix, 0)); }
+.walk.pin .walk-card .media { box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.4); }
+.walk.pin .walk-foot { padding-top: 0; padding-bottom: 26px; }
 
 /* ---------- Project and post cards ---------- */
 .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(40px, 5vw, 80px) clamp(20px, 3vw, 44px); align-items: end; }
@@ -621,9 +611,6 @@ a.index-row:hover .t { transform: translateX(14px); color: var(--accent); }
   .stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .scrolled .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); }
-  .walk-sticky { --cw: min(86vw, (100svh - 290px) * 1.5); }
-  .walk-stage { perspective: 1700px; }
-  .walk-head h2 { font-size: 24px; }
   .project-card, .project-card.narrow, .project-card.narrow + .project-card, .project-card.wide { grid-column: span 12; }
   .project-card.wide .media, .project-card.narrow .media { aspect-ratio: 3 / 2; }
   .index-row { grid-template-columns: 34px 1fr auto; }

@@ -89,6 +89,20 @@ ARROW = ('<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColo
 BG_LIGHT, BG_DARK = "#e8e9e5", "#0d1012"
 
 
+def _version():
+    """A short fingerprint of the css and js, added to their URLs (?v=...). When any of them
+    changes, browsers fetch all of them fresh, so a phone never mixes old styles with new scripts."""
+    import hashlib
+    h = hashlib.sha1()
+    for f in ("assets/css/style.css", "assets/js/data.js", "assets/js/art.js", "assets/js/main.js", "assets/js/model.js"):
+        with open(os.path.join(ROOT, f), "rb") as fh:
+            h.update(fh.read())
+    return h.hexdigest()[:8]
+
+
+V = _version()
+
+
 def url(lang, page):
     path = "" if page == "index.html" else page
     return f"{DOMAIN}/{'tr/' if lang == 'tr' else ''}{path}"
@@ -122,7 +136,7 @@ def head(lang, page, title, desc):
         redirect = ("if(!localStorage.getItem('lang')&&/^tr\\b/i.test(navigator.language||''))"
                     f"{{location.replace('tr/{'' if page == 'index.html' else page}'+location.search);}}")
     return f'''<!doctype html>
-<html lang="{lang}" data-root="{r}">
+<html lang="{lang}" data-root="{r}" data-v="{V}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -153,7 +167,7 @@ def head(lang, page, title, desc):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..600;1,300..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}assets/css/style.css">
+<link rel="stylesheet" href="{r}assets/css/style.css?v={V}">
 </head>
 '''
 
@@ -215,9 +229,9 @@ def footer(lang):
 
 def scripts(lang):
     r = "../" if lang == "tr" else ""
-    return f'''<script src="{r}assets/js/data.js"></script>
-<script src="{r}assets/js/art.js"></script>
-<script src="{r}assets/js/main.js"></script>
+    return f'''<script src="{r}assets/js/data.js?v={V}"></script>
+<script src="{r}assets/js/art.js?v={V}"></script>
+<script src="{r}assets/js/main.js?v={V}"></script>
 </body>
 </html>
 '''
