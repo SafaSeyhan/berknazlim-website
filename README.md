@@ -18,6 +18,12 @@ Website of architect **Berk Nazlım**: a static site (plain HTML, CSS and JavaSc
 | Journal article | `post.html?p=<slug>` |
 | Contact | `contact.html` |
 
+## Animation and 3D
+
+- **3D model** (home page hero and the process section on the services page): `assets/js/model.js`, drawn with [three.js](https://threejs.org), which is included in `assets/vendor/` so the site depends on no outside script. The model is an abstract building assembled from ideas in Berk's projects. It turns with the pointer, can be dragged, comes apart as you scroll the home page and is built in four steps on the services page. Its colours are the `--m-*` variables in `assets/css/style.css`.
+- **Walk-through** of the featured projects on the home page, the picture viewer on project pages, scroll effects and page transitions: `assets/js/main.js` and `assets/css/style.css`.
+- Visitors who have asked their device for reduced motion get the same content without the movement, and the site still works if WebGL is unavailable (the model is simply left out).
+
 ## Editing content
 
 Almost everything you will want to change lives in **`assets/js/data.js`**:

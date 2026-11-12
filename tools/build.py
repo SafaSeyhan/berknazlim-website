@@ -12,6 +12,7 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = "https://berknazlim.com"
 LINKEDIN = "https://www.linkedin.com/in/berk-nazl%C4%B1m-11b173279"
+EMAIL = "nazlimberk@gmail.com"
 PAGES = ["index.html", "portfolio.html", "project.html", "services.html", "about.html",
          "journal.html", "post.html", "contact.html"]
 
@@ -26,7 +27,7 @@ S = {
         "theme": "Switch light or dark mode",
         "cta_nav": "Start a project",
         "cta_label": "Have a project in mind?",
-        "cta_title": "Let's design something <em>lasting</em> together.",
+        "cta_title": "Let's design something lasting together.",
         "cta_btn": "Get in touch",
         "f_about": "Interior architecture and design from Istanbul.",
         "f_studio": "Pages", "f_contact": "Contact", "f_follow": "Follow",
@@ -43,12 +44,34 @@ S = {
         "theme": "Açık veya koyu temaya geç",
         "cta_nav": "Proje başlat",
         "cta_label": "Aklınızda bir proje mi var?",
-        "cta_title": "Birlikte <em>kalıcı</em> bir şey tasarlayalım.",
+        "cta_title": "Birlikte kalıcı bir şey tasarlayalım.",
         "cta_btn": "İletişime geçin",
         "f_about": "İstanbul'dan iç mimarlık ve tasarım.",
         "f_studio": "Sayfalar", "f_contact": "İletişim", "f_follow": "Takip edin",
         "f_start": "Proje başlat", "city": "İstanbul, Türkiye",
         "rights": "Berk Nazlım",
+    },
+}
+
+# Short interface texts added with the animated rebuild
+X = {
+    "en": {
+        "kicker": "Berk Nazlım, interior architect, Istanbul",
+        "see_projects": "View projects", "about_berk": "About Berk",
+        "hint_drag": "Drag the model to turn it", "hint_scroll": "Scroll to take it apart",
+        "approach": "Approach", "more": "More about Berk",
+        "work": "Featured projects", "all": "All projects", "walk_hint": "Keep scrolling to walk through",
+        "journal": "News and ideas in architecture", "read_journal": "Read the journal",
+        "model_alt": "A turning 3D model of a building: two concrete walls with a glass stair between them, floors, a roof and people.",
+    },
+    "tr": {
+        "kicker": "Berk Nazlım, iç mimar, İstanbul",
+        "see_projects": "Projeleri gör", "about_berk": "Berk hakkında",
+        "hint_drag": "Modeli çevirmek için sürükleyin", "hint_scroll": "Parçalarına ayırmak için kaydırın",
+        "approach": "Yaklaşım", "more": "Berk hakkında daha fazlası",
+        "work": "Öne çıkan projeler", "all": "Tüm projeler", "walk_hint": "İçinden yürümek için kaydırmaya devam edin",
+        "journal": "Mimarlıkta haberler ve fikirler", "read_journal": "Günlüğü oku",
+        "model_alt": "Dönen üç boyutlu bir yapı modeli: aralarında cam merdiven bulunan iki beton duvar, katlar, çatı ve insanlar.",
     },
 }
 
@@ -60,6 +83,10 @@ SUN = ('<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" s
        '<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>')
 MOON = ('<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">'
         '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>')
+ARROW = ('<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">'
+         '<path d="M4 12h15M13 6l6 6-6 6"/></svg>')
+
+BG_LIGHT, BG_DARK = "#e8e9e5", "#0d1012"
 
 
 def url(lang, page):
@@ -103,9 +130,9 @@ def head(lang, page, title, desc):
 <meta name="description" content="{desc}">
 <meta name="google-site-verification" content="ng8IBVjsUk1MznbtXwQrq5oEJaAVr4SV7g_3YMehIEM">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
-<script>(function(){{var d=document.documentElement;d.classList.add('js');setTimeout(function(){{if(!window.__siteReady)d.classList.add('no-reveal');}},2500);try{{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;{redirect}}}catch(e){{}}}})();</script>
+<meta name="theme-color" content="{BG_LIGHT}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{BG_DARK}" media="(prefers-color-scheme: dark)">
+<script>(function(){{var d=document.documentElement;d.classList.add('js');setTimeout(function(){{if(!window.__siteReady)d.classList.add('no-motion');}},2500);try{{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t;{redirect}}}catch(e){{}}}})();</script>
 <link rel="canonical" href="{url(lang, page)}">
 <link rel="alternate" hreflang="en" href="{url('en', page)}">
 <link rel="alternate" hreflang="tr" href="{url('tr', page)}">
@@ -133,12 +160,11 @@ def head(lang, page, title, desc):
 
 def header(lang, page):
     s = S[lang]
-    other = "tr" if lang == "en" else "en"
     en_href = ("../" if lang == "tr" else "") + page
     tr_href = page if lang == "tr" else "tr/" + page
-    links = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if h == page else ""}>{t}</a></li>' for h, t in s["nav"])
-    mlinks = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if h == page else ""}>{t}<span>{i + 1:02d}</span></a></li>'
-                     for i, (h, t) in enumerate(s["nav"]))
+    cur = lambda h: ' aria-current="page"' if h == page else ""
+    links = "".join(f'<li><a href="{h}"{cur(h)}>{t}</a></li>' for h, t in s["nav"])
+    mlinks = "".join(f'<li style="--i:{i}"><a href="{h}"{cur(h)}><span>{t}</span></a></li>' for i, (h, t) in enumerate(s["nav"]))
     return f'''<header class="site-header">
   <nav class="nav wrap" aria-label="{s["menu"]}">
     <a class="brand" href="index.html" aria-label="{s["home_aria"]}">{LOGO}<span><span class="brand-name">Berk Nazlım</span><small>{s["tagline"]}</small></span></a>
@@ -155,7 +181,7 @@ def header(lang, page):
 </header>
 <div class="mobile-menu" id="mobile-menu">
   <ul>{mlinks}</ul>
-  <div class="mm-foot"><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a><br>{s["city"]}</div>
+  <div class="mm-foot"><a href="mailto:{EMAIL}">{EMAIL}</a><span>{s["city"]}</span></div>
 </div>
 '''
 
@@ -163,8 +189,8 @@ def header(lang, page):
 def cta(lang):
     s = S[lang]
     return f'''<section class="cta"><div class="wrap cta-inner">
-  <div><span class="label">{s["cta_label"]}</span><h2>{s["cta_title"]}</h2></div>
-  <a class="btn btn-solid" href="contact.html">{s["cta_btn"]} <span class="arrow">→</span></a>
+  <div><p class="label">{s["cta_label"]}</p><h2 class="split">{s["cta_title"]}</h2></div>
+  <a class="btn btn-solid" href="contact.html">{s["cta_btn"]} {ARROW}</a>
 </div></section>
 '''
 
@@ -175,12 +201,13 @@ def footer(lang):
     return f'''<footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
-      <div><a class="brand" href="index.html">{LOGO}<span><span class="brand-name">Berk Nazlım</span><small>{s["tagline"]}</small></span></a><p>{s["f_about"]}</p></div>
+      <div><p class="footer-about">{s["f_about"]}</p></div>
       <div><h5>{s["f_studio"]}</h5><ul><li><a href="portfolio.html">{nav["portfolio.html"]}</a></li><li><a href="services.html">{nav["services.html"]}</a></li><li><a href="about.html">{nav["about.html"]}</a></li><li><a href="journal.html">{nav["journal.html"]}</a></li></ul></div>
-      <div><h5>{s["f_contact"]}</h5><ul><li><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a></li><li>{s["city"]}</li><li><a href="contact.html">{s["f_start"]}</a></li></ul></div>
+      <div><h5>{s["f_contact"]}</h5><ul><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>{s["city"]}</li><li><a href="contact.html">{s["f_start"]}</a></li></ul></div>
       <div><h5>{s["f_follow"]}</h5><ul><li><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
     </div>
-    <div class="footer-bottom mono"><span>© <span id="year">2026</span> {s["rights"]}</span><span>41.0082° N, 28.9784° E</span><span>berknazlim.com</span></div>
+    <a class="wordmark" href="index.html" aria-label="{s["home_aria"]}"><span class="letters split">Berk Nazlım</span></a>
+    <div class="footer-bottom"><span>© <span id="year">2026</span> {s["rights"]}</span><span>41.0082° N, 28.9784° E</span><span>berknazlim.com</span></div>
   </div>
 </footer>
 '''
@@ -210,55 +237,56 @@ def write(lang, page, title, desc, slug, body, with_cta=True):
 # Page content
 # ==========================================================================
 
+HOME = {
+    "en": {
+        "statement": "Good architecture reads its site, respects its city and gives something back to the people who use it.",
+        "lead": "Trained in the Department of Interior Architecture at ITU's Faculty of Architecture, Berk has worked on construction sites and in design offices since 2023, from a hotel lobby in Maçka to an apartment in Zeytinburnu. Each project starts from one clear idea and carries it down to the material, the furniture and the detail.",
+        "stats": [("6", "Selected projects"), ("5", "Roles in offices and on site"), ("7", "Design and rendering tools"), ("’26", "ITU graduate")],
+    },
+    "tr": {
+        "statement": "İyi mimarlık yerini okur, kentine saygı duyar ve onu kullanan insanlara bir şey geri verir.",
+        "lead": "İTÜ Mimarlık Fakültesi İç Mimarlık Bölümü'nde eğitim alan Berk, 2023'ten bu yana şantiyelerde ve tasarım ofislerinde çalışıyor: Maçka'daki bir otel lobisinden Zeytinburnu'ndaki bir daireye kadar. Her proje tek ve net bir fikirle başlıyor ve bu fikri malzemeye, mobilyaya ve detaya kadar taşıyor.",
+        "stats": [("6", "Seçili proje"), ("5", "Ofis ve şantiye deneyimi"), ("7", "Tasarım ve görselleştirme aracı"), ("’26", "İTÜ mezunu")],
+    },
+}
+
+
 def home(lang):
-    if lang == "en":
-        return '''<section class="section intro-first"><div class="wrap intro">
-  <div class="intro-side"><span class="label">01 — Approach</span><figure class="intro-portrait"><div class="media"><img src="assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536" fetchpriority="high"></div></figure></div>
-  <div>
-    <h1 class="statement reveal">Good architecture reads its site, respects its city and gives something back to the people who use it.</h1>
-    <p class="lead reveal">Trained in the Department of Interior Architecture at ITU's Faculty of Architecture, Berk has worked on construction sites and in design offices since 2023, from a hotel lobby in Maçka to an apartment in Zeytinburnu. Each project starts from one clear idea and carries it down to the material, the furniture and the detail.</p>
-    <a class="link reveal" href="about.html">More about Berk →</a>
-    <div class="stats">
-      <div class="stat"><div class="num">6</div><p>Selected projects</p></div>
-      <div class="stat"><div class="num">5</div><p>Roles in offices and on site</p></div>
-      <div class="stat"><div class="num">7</div><p>Design and rendering tools</p></div>
-      <div class="stat"><div class="num">’26</div><p>ITU graduate</p></div>
+    h, x = HOME[lang], X[lang]
+    r = "../" if lang == "tr" else ""
+    stats = "".join(f'<div class="stat"><div class="num" data-count>{n}</div><p>{t}</p></div>' for n, t in h["stats"])
+    return f'''<section class="hero" data-hero>
+  <div class="hero-sticky">
+    <div class="model" data-model="hero" role="img" aria-label="{x["model_alt"]}"></div>
+    <div class="wrap hero-copy">
+      <p class="kicker rise" style="--d:0">{x["kicker"]}</p>
+      <h1 class="split" data-split-now>{h["statement"]}</h1>
+      <div class="hero-actions rise" style="--d:1"><a class="btn btn-solid" href="portfolio.html">{x["see_projects"]} {ARROW}</a><a class="btn" href="about.html">{x["about_berk"]}</a></div>
     </div>
+    <div class="wrap hero-foot rise" style="--d:2"><span class="hint-drag">{x["hint_drag"]}</span><span class="hint-scroll"><i></i>{x["hint_scroll"]}</span><span>41.0082° N, 28.9784° E</span></div>
+  </div>
+</section>
+
+<section class="section approach"><div class="wrap approach-grid">
+  <figure class="approach-portrait tilt"><div class="media curtain"><img src="{r}assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536"></div></figure>
+  <div>
+    <p class="label">{x["approach"]}</p>
+    <p class="lead reveal">{h["lead"]}</p>
+    <a class="link reveal" href="about.html">{x["more"]} {ARROW}</a>
+    <div class="stats reveal">{stats}</div>
   </div>
 </div></section>
 
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">02 — Selected work</span><h2>Featured projects</h2></div><a class="link" href="portfolio.html">All projects →</a></div>
-  <div class="projects-grid" id="featured"></div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Journal</span><h2>News &amp; ideas in architecture</h2></div><a class="link" href="journal.html">Read the journal →</a></div>
-  <div class="posts-grid" id="latest-posts"></div>
-</div></section>
-'''
-    return '''<section class="section intro-first"><div class="wrap intro">
-  <div class="intro-side"><span class="label">01 — Yaklaşım</span><figure class="intro-portrait"><div class="media"><img src="../assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536" fetchpriority="high"></div></figure></div>
-  <div>
-    <h1 class="statement reveal">İyi mimarlık yerini okur, kentine saygı duyar ve onu kullanan insanlara bir şey geri verir.</h1>
-    <p class="lead reveal">İTÜ Mimarlık Fakültesi İç Mimarlık Bölümü'nde eğitim alan Berk, 2023'ten bu yana şantiyelerde ve tasarım ofislerinde çalışıyor: Maçka'daki bir otel lobisinden Zeytinburnu'ndaki bir daireye kadar. Her proje tek ve net bir fikirle başlıyor ve bu fikri malzemeye, mobilyaya ve detaya kadar taşıyor.</p>
-    <a class="link reveal" href="about.html">Berk hakkında daha fazlası →</a>
-    <div class="stats">
-      <div class="stat"><div class="num">6</div><p>Seçili proje</p></div>
-      <div class="stat"><div class="num">5</div><p>Ofis ve şantiye deneyimi</p></div>
-      <div class="stat"><div class="num">7</div><p>Tasarım ve görselleştirme aracı</p></div>
-      <div class="stat"><div class="num">’26</div><p>İTÜ mezunu</p></div>
-    </div>
+<section class="walk" data-walk aria-label="{x["work"]}">
+  <div class="walk-sticky">
+    <div class="wrap walk-head"><h2>{x["work"]}</h2><a class="link" href="portfolio.html">{x["all"]} {ARROW}</a></div>
+    <div class="walk-stage"><div class="walk-world" id="featured" data-all="{x["all"]}" data-hint="{x["walk_hint"]}"></div></div>
+    <div class="wrap walk-foot"><span class="walk-count" id="walk-count"></span><span class="walk-bar"><i></i></span></div>
   </div>
-</div></section>
+</section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">02 — Seçili işler</span><h2>Öne çıkan projeler</h2></div><a class="link" href="portfolio.html">Tüm projeler →</a></div>
-  <div class="projects-grid" id="featured"></div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">03 — Günlük</span><h2>Mimarlıkta haberler ve fikirler</h2></div><a class="link" href="journal.html">Günlüğü oku →</a></div>
+  <div class="section-head"><h2 class="split">{x["journal"]}</h2><a class="link" href="journal.html">{x["read_journal"]} {ARROW}</a></div>
   <div class="posts-grid" id="latest-posts"></div>
 </div></section>
 '''
@@ -266,31 +294,23 @@ def home(lang):
 
 def portfolio(lang):
     if lang == "en":
-        return '''<section class="page-head"><div class="wrap">
-  <span class="label">Portfolio</span><h1>Selected <em>work</em></h1>
-  <p class="lead">Academic and freelance work: a cultural centre, cafés and restaurants, a waterfront and a family home, around Istanbul and Çanakkale.</p>
+        t = ("Portfolio", "Selected work", "Academic and freelance work: a cultural centre, cafés and restaurants, a waterfront and a family home, around Istanbul and Çanakkale.",
+             "Filter projects", "All projects", ("No.", "Project", "Location", "Typology", "Year"))
+    else:
+        t = ("Projeler", "Seçili işler", "Akademik ve serbest çalışmalar: bir kültür merkezi, kafe ve restoranlar, bir kıyı projesi ve bir aile evi; İstanbul ve Çanakkale'de.",
+             "Projeleri filtrele", "Tüm projeler", ("No", "Proje", "Konum", "Tipoloji", "Yıl"))
+    c = t[5]
+    return f'''<section class="page-head"><div class="wrap">
+  <p class="label rise" style="--d:0">{t[0]}</p><h1 class="split" data-split-now>{t[1]}</h1>
+  <p class="lead rise" style="--d:1">{t[2]}</p>
 </div></section>
-<section class="section"><div class="wrap">
-  <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+<section class="section section-tight"><div class="wrap">
+  <div class="filters" id="filters" role="group" aria-label="{t[3]}"></div>
   <div class="projects-grid" id="projects"></div>
 </div></section>
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">Index</span><h2>All projects</h2></div></div>
-  <div class="index-row index-head label"><span>No.</span><span>Project</span><span>Location</span><span>Typology</span><span class="y">Year</span></div>
-  <div class="index-list" id="index-list"></div>
-</div></section>
-'''
-    return '''<section class="page-head"><div class="wrap">
-  <span class="label">Projeler</span><h1>Seçili <em>işler</em></h1>
-  <p class="lead">Akademik ve serbest çalışmalar: bir kültür merkezi, kafe ve restoranlar, bir kıyı projesi ve bir aile evi; İstanbul ve Çanakkale'de.</p>
-</div></section>
-<section class="section"><div class="wrap">
-  <div class="filters" id="filters" role="group" aria-label="Projeleri filtrele"></div>
-  <div class="projects-grid" id="projects"></div>
-</div></section>
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">Dizin</span><h2>Tüm projeler</h2></div></div>
-  <div class="index-row index-head label"><span>No</span><span>Proje</span><span>Konum</span><span>Tipoloji</span><span class="y">Yıl</span></div>
+  <div class="section-head"><h2 class="split">{t[4]}</h2></div>
+  <div class="index-row index-head"><span>{c[0]}</span><span>{c[1]}</span><span>{c[2]}</span><span>{c[3]}</span><span class="y">{c[4]}</span></div>
   <div class="index-list" id="index-list"></div>
 </div></section>
 '''
@@ -333,32 +353,34 @@ PROCESS = {
            ("İnşa etmek", "Çizimler, malzeme kararları ve teslimata kadar şantiyede yakın takip.")],
 }
 
+SERVICES_PAGE = {
+    "en": ("Services", "From first sketch to finished space", "A complete design service, or exactly the part you need. Every project is handled personally by Berk.",
+           "How we work together", "Clear stages, clear deliverables and one point of contact from first sketch to handover.",
+           "A 3D model of a building that is built up in four steps as you scroll: site, structure, solid form, finished building."),
+    "tr": ("Hizmetler", "İlk eskizden tamamlanmış mekâna", "Eksiksiz bir tasarım hizmeti ya da tam ihtiyacınız olan kısım. Her proje bizzat Berk tarafından yürütülür.",
+           "Birlikte nasıl çalışıyoruz", "Net aşamalar, net çıktılar ve ilk eskizden teslime kadar tek bir muhatap.",
+           "Kaydırdıkça dört adımda inşa edilen üç boyutlu bir yapı modeli: arazi, taşıyıcı sistem, kütle ve tamamlanmış yapı."),
+}
+
 
 def services(lang):
+    t = SERVICES_PAGE[lang]
     rows = "".join(
-        f'<div class="service reveal"><span class="n mono">{i + 1:02d}</span><h3>{t}</h3><div><p>{d}</p><ul>{"".join(f"<li>{x}</li>" for x in items)}</ul></div></div>'
-        for i, (t, d, items) in enumerate(SERVICES[lang]))
-    steps = "".join(f'<div class="step reveal"><span class="n">{i + 1:02d}</span><h4>{t}</h4><p>{d}</p></div>'
-                    for i, (t, d) in enumerate(PROCESS[lang]))
-    if lang == "en":
-        return f'''<section class="page-head"><div class="wrap">
-  <span class="label">Services</span><h1>From first sketch to <em>finished</em> space</h1>
-  <p class="lead">A complete design service, or exactly the part you need. Every project is handled personally by Berk.</p>
-</div></section>
-<section class="section"><div class="wrap"><div class="services-list">{rows}</div></div></section>
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">Process</span><h2>How we work together</h2></div><p class="lead">Clear stages, clear deliverables and one point of contact from first sketch to handover.</p></div>
-  <div class="process">{steps}</div>
-</div></section>
-'''
+        f'<div class="service reveal"><span class="n">{i + 1:02d}</span><h3>{title}</h3><div><p>{d}</p><ul>{"".join(f"<li>{x}</li>" for x in items)}</ul></div></div>'
+        for i, (title, d, items) in enumerate(SERVICES[lang]))
+    steps = "".join(f'<div class="step" data-step="{i}"><span class="n">{i + 1:02d}</span><h3>{title}</h3><p>{d}</p></div>'
+                    for i, (title, d) in enumerate(PROCESS[lang]))
     return f'''<section class="page-head"><div class="wrap">
-  <span class="label">Hizmetler</span><h1>İlk eskizden <em>tamamlanmış</em> mekâna</h1>
-  <p class="lead">Eksiksiz bir tasarım hizmeti ya da tam ihtiyacınız olan kısım. Her proje bizzat Berk tarafından yürütülür.</p>
+  <p class="label rise" style="--d:0">{t[0]}</p><h1 class="split" data-split-now>{t[1]}</h1>
+  <p class="lead rise" style="--d:1">{t[2]}</p>
 </div></section>
-<section class="section"><div class="wrap"><div class="services-list">{rows}</div></div></section>
-<section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">Süreç</span><h2>Birlikte nasıl çalışıyoruz</h2></div><p class="lead">Net aşamalar, net çıktılar ve ilk eskizden teslime kadar tek bir muhatap.</p></div>
-  <div class="process">{steps}</div>
+<section class="section section-tight"><div class="wrap"><div class="services-list">{rows}</div></div></section>
+<section class="section build" data-build><div class="wrap">
+  <div class="section-head"><h2 class="split">{t[3]}</h2><p class="lead">{t[4]}</p></div>
+  <div class="build-grid">
+    <div class="build-model"><div class="model" data-model="process" role="img" aria-label="{t[5]}"></div><div class="build-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+    <div class="build-steps">{steps}</div>
+  </div>
 </div></section>
 '''
 
@@ -417,23 +439,26 @@ ABOUT = {
 
 def about(lang):
     a = ABOUT[lang]
+    r = "../" if lang == "tr" else ""
+    import re
+    title = re.sub(r"</?em>", "", a["title"])
     bio = "".join(f"<p>{p}</p>" for p in a["bio"])
-    tl = "".join(f'<div class="tl"><span class="y mono">{y}</span><div><h4>{t}</h4><p>{d}</p></div></div>' for y, t, d in a["timeline"])
-    vals = "".join(f'<div class="value reveal"><span class="n mono">{i + 1:02d}</span><h4>{t}</h4><p>{d}</p></div>' for i, (t, d) in enumerate(a["values"]))
+    tl = "".join(f'<div class="tl reveal"><span class="y">{y}</span><div><h4>{t}</h4><p>{d}</p></div></div>' for y, t, d in a["timeline"])
+    vals = "".join(f'<div class="value reveal" style="--i:{i}"><h4>{t}</h4><p>{d}</p></div>' for i, (t, d) in enumerate(a["values"]))
     return f'''<section class="page-head"><div class="wrap">
-  <span class="label">{a["label"]}</span><h1>{a["title"]}</h1><p class="lead">{a["lead"]}</p>
+  <p class="label rise" style="--d:0">{a["label"]}</p><h1 class="split" data-split-now>{title}</h1><p class="lead rise" style="--d:1">{a["lead"]}</p>
 </div></section>
-<section class="section"><div class="wrap about-grid">
-  <figure class="portrait"><div class="media" id="portrait-art"><img src="{"../" if lang == "tr" else ""}assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536"></div><figcaption><span>{a["caption"][0]}</span><span class="mono">{a["caption"][1]}</span></figcaption></figure>
+<section class="section section-tight"><div class="wrap about-grid">
+  <figure class="portrait tilt"><div class="media curtain" id="portrait-art"><img src="{r}assets/img/berk-nazlim.jpg" alt="Berk Nazlım" width="526" height="536"></div><figcaption><span>{a["caption"][0]}</span><span>{a["caption"][1]}</span></figcaption></figure>
   <div>
-    <p class="statement">{a["statement"]}</p>
-    <div class="lead" style="max-width:none">{bio}</div>
-    <div class="block"><span class="label">{a["path"]}</span><div class="timeline">{tl}</div></div>
-    <div class="block"><span class="label">{a["tools"]}</span><div class="tags">{"".join(f"<span>{x}</span>" for x in a["toollist"])}</div></div>
+    <p class="statement split">{a["statement"]}</p>
+    <div class="bio reveal">{bio}</div>
+    <div class="block"><p class="label">{a["path"]}</p><div class="timeline" data-timeline>{tl}</div></div>
+    <div class="block"><p class="label">{a["tools"]}</p><div class="tags reveal">{"".join(f'<span style="--i:{i}">{x}</span>' for i, x in enumerate(a["toollist"]))}</div></div>
   </div>
 </div></section>
 <section class="section"><div class="wrap">
-  <div class="section-head"><div><span class="label">{a["values_label"]}</span><h2>{a["values_title"]}</h2></div></div>
+  <div class="section-head"><h2 class="split">{a["values_title"]}</h2></div>
   <div class="values">{vals}</div>
 </div></section>
 '''
@@ -441,23 +466,16 @@ def about(lang):
 
 def journal(lang):
     if lang == "en":
-        return '''<section class="page-head"><div class="wrap">
-  <span class="label">Journal</span><h1>News &amp; <em>ideas</em></h1>
-  <p class="lead">The latest in architecture: materials, technology, cities and notes on my own work.</p>
+        t = ("Journal", "News and ideas", "The latest in architecture: materials, technology, cities and notes on my own work.", "Filter articles")
+    else:
+        t = ("Günlük", "Haberler ve fikirler", "Mimarlıkta son gelişmeler: malzeme, teknoloji, kentler ve kendi çalışmalarımdan notlar.", "Yazıları filtrele")
+    return f'''<section class="page-head"><div class="wrap">
+  <p class="label rise" style="--d:0">{t[0]}</p><h1 class="split" data-split-now>{t[1]}</h1>
+  <p class="lead rise" style="--d:1">{t[2]}</p>
 </div></section>
-<section class="section"><div class="wrap">
+<section class="section section-tight"><div class="wrap">
   <div id="feature"></div>
-  <div class="filters" id="filters" role="group" aria-label="Filter articles"></div>
-  <div class="posts-grid" id="posts"></div>
-</div></section>
-'''
-    return '''<section class="page-head"><div class="wrap">
-  <span class="label">Günlük</span><h1>Haberler ve <em>fikirler</em></h1>
-  <p class="lead">Mimarlıkta son gelişmeler: malzeme, teknoloji, kentler ve kendi çalışmalarımdan notlar.</p>
-</div></section>
-<section class="section"><div class="wrap">
-  <div id="feature"></div>
-  <div class="filters" id="filters" role="group" aria-label="Yazıları filtrele"></div>
+  <div class="filters" id="filters" role="group" aria-label="{t[3]}"></div>
   <div class="posts-grid" id="posts"></div>
 </div></section>
 '''
@@ -489,29 +507,31 @@ CONTACT = {
 
 def contact(lang):
     c = CONTACT[lang]
+    import re
+    title = re.sub(r"</?em>", "", c["title"])
     chips = "".join(f'<input type="radio" id="t{i}" name="type" value="{t}"><label for="t{i}">{t}</label>' for i, t in enumerate(c["types"]))
     opts = "".join(f"<option>{b}</option>" for b in c["budgets"])
     city = S[lang]["city"]
     return f'''<section class="page-head"><div class="wrap">
-  <span class="label">{c["label"]}</span><h1>{c["title"]}</h1><p class="lead">{c["lead"]}</p>
+  <p class="label rise" style="--d:0">{c["label"]}</p><h1 class="split" data-split-now>{title}</h1><p class="lead rise" style="--d:1">{c["lead"]}</p>
 </div></section>
-<section class="section"><div class="wrap contact-grid">
-  <div class="contact-info"><dl>
-    <div><dt class="label">{c["email"]}</dt><dd><a href="mailto:nazlimberk@gmail.com">nazlimberk@gmail.com</a></dd></div>
+<section class="section section-tight"><div class="wrap contact-grid">
+  <div class="contact-info reveal"><dl>
+    <div><dt class="label">{c["email"]}</dt><dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd></div>
     <div><dt class="label">{c["studio"]}</dt><dd>{city}</dd></div>
     <div><dt class="label">{c["hours"]}</dt><dd>{c["hours_v"]}</dd></div>
     <div><dt class="label">{c["social"]}</dt><dd><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a></dd></div>
   </dl></div>
-  <form id="contact-form">
+  <form id="contact-form" class="reveal">
     <div class="form-row">
       <div class="field"><label class="label" for="name">{c["name"]} *</label><input id="name" name="name" required autocomplete="name"></div>
       <div class="field"><label class="label" for="email">{c["mail"]} *</label><input id="email" name="email" type="email" required autocomplete="email"></div>
     </div>
     <div class="field"><label class="label" for="company">{c["company"]}</label><input id="company" name="company" autocomplete="organization"></div>
-    <fieldset class="field" style="border:0;padding:0;margin:0 0 26px"><legend class="label flabel" style="margin-bottom:10px;padding:0">{c["type"]}</legend><div class="chips">{chips}</div></fieldset>
+    <fieldset class="field chips-field"><legend class="label">{c["type"]}</legend><div class="chips">{chips}</div></fieldset>
     <div class="field"><label class="label" for="budget">{c["budget"]}</label><select id="budget" name="budget"><option value="">{c["select"]}</option>{opts}</select></div>
     <div class="field"><label class="label" for="message">{c["message"]} *</label><textarea id="message" name="message" required></textarea></div>
-    <button class="btn btn-solid" type="submit">{c["send"]} <span class="arrow">→</span></button>
+    <button class="btn btn-solid" type="submit">{c["send"]} {ARROW}</button>
     <p class="form-note" id="form-status" aria-live="polite"></p>
   </form>
 </div></section>
@@ -568,7 +588,7 @@ nf += '''<body data-page="404"><main><section class="notfound"><div class="wrap"
   <h1>404</h1>
   <p class="lead" style="margin:0 auto 12px">This page hasn't been built yet.</p>
   <p class="lead" style="margin:0 auto 32px" lang="tr">Bu sayfa henüz inşa edilmedi.</p>
-  <a class="btn btn-solid" href="/">Home / Ana sayfa →</a>
+  <a class="btn btn-solid" href="/">Home / Ana sayfa</a>
 </div></section></main></body></html>
 '''
 with open(os.path.join(ROOT, "404.html"), "w", encoding="utf-8") as fh:
