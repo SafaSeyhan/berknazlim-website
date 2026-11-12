@@ -29,14 +29,16 @@ export function mount(host, opts = {}) {
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
   } catch (e) {
     host.classList.add("no-gl");
     return null;
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // phones get a lighter picture: fewer pixels and a smaller, simpler shadow
+  const lite = matchMedia("(max-width: 820px), (pointer: coarse)").matches;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2));
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = lite ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -48,12 +50,14 @@ export function mount(host, opts = {}) {
   const sun = new THREE.DirectionalLight(0xffffff, 2.1);
   sun.position.set(-22, 40, 26);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(2048, 2048); // halved on phones, below
   Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 34, bottom: -24, near: 1, far: 140 });
   sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = 0.05;
   sun.shadow.radius = 5;
   scene.add(hemi, sun);
+
+  if (lite) sun.shadow.mapSize.set(1024, 1024);
 
   /* ---------- materials ---------- */
   const lam = (o) => new THREE.MeshLambertMaterial(o || {});
@@ -174,7 +178,7 @@ export function mount(host, opts = {}) {
   let stage = mode === "process" ? 0 : 3;
   let explode = 0, explodeTo = 0;
   let yaw = -0.62, spin = 0, drag = 0, dragV = 0, px = 0, py = 0, pxT = 0, pyT = 0;
-  let visible = true, last = performance.now(), dirty = true;
+  let visible = true, last = performance.now(), dirty = true, tick = false;
 
   function retarget(stagger) {
     const now = performance.now();
@@ -231,6 +235,8 @@ export function mount(host, opts = {}) {
   function frame(now) {
     requestAnimationFrame(frame);
     if (!visible || document.hidden) return;
+    // on phones the slow idle turn is drawn at half rate; anything the visitor causes runs at full rate
+    if (lite && !dragging && Math.abs(explodeTo - explode) < 0.0005 && (tick = !tick)) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     let moving = false;
 

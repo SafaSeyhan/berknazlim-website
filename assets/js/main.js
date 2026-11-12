@@ -190,10 +190,13 @@
 
     // scrolling through the hero takes the model apart
     const hero = $("[data-hero]");
+    let heroP = -1;
     onScroll.push(() => {
       const r = hero.getBoundingClientRect();
       const p = clamp(-r.top / Math.max(1, r.height - window.innerHeight), 0, 1);
-      hero.style.setProperty("--hp", p.toFixed(4));
+      if (p === heroP) return;
+      heroP = p;
+      hero.style.setProperty("--hp", p.toFixed(3));
       if (models.hero) models.hero.setExplode(reduce ? 0 : smooth(0.04, 0.85, p));
     });
   }
@@ -213,6 +216,28 @@
     const cards = $$(".walk-card", world), floor = $(".walk-floor", world), lines = $$("i", floor);
     const count = $("#walk-count"), bar = $(".walk-bar i", sec);
 
+    // phones and tablets: a swipe gallery the browser scrolls natively, which stays smooth on any device
+    if (!reduce && matchMedia("(max-width: 820px), (pointer: coarse)").matches) {
+      sec.classList.add("swipe");
+      const shown = cards.slice(0, feat.length);
+      if ("IntersectionObserver" in window) {
+        // as before: a drawing turns into its photo only while the whole picture is on screen
+        const pio = new IntersectionObserver((en) => en.forEach((e) => e.target.classList.toggle("photo", e.intersectionRatio >= 0.95)), { threshold: [0, 0.95] });
+        shown.forEach((c) => pio.observe($(".media", c)));
+      } else shown.forEach((c) => $(".media", c).classList.add("photo"));
+      let wait = false;
+      const mark = () => {
+        wait = false;
+        const max = world.scrollWidth - world.clientWidth;
+        const p = max > 0 ? clamp(world.scrollLeft / max, 0, 1) : 0;
+        const k = Math.round(p * (n - 1));
+        if (count) count.textContent = k < feat.length ? `${pad(k + 1)} / ${pad(feat.length)}` : "";
+        if (bar) bar.style.transform = `scaleX(${Math.max(p, 1 / n).toFixed(3)})`;
+      };
+      world.addEventListener("scroll", () => { if (!wait) { wait = true; requestAnimationFrame(mark); } }, { passive: true });
+      mark();
+      return;
+    }
     if (reduce || !window.CSS || !CSS.supports("transform-style", "preserve-3d")) {
       sec.classList.add("flat");
       cards.forEach((c) => c.style.setProperty("--mix", 1));

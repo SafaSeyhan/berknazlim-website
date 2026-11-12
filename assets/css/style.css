@@ -246,8 +246,11 @@ figcaption { display: flex; justify-content: space-between; gap: 16px; padding-t
 
 /* pictures lean towards the pointer (main.js sets --tx / --ty) */
 .tilt { --tx: 0; --ty: 0; }
-.tilt .media { transform: perspective(1100px) rotateY(calc(var(--tx) * 8deg)) rotateX(calc(var(--ty) * -8deg)); transition: transform 0.7s var(--ease-out), clip-path 1.2s var(--ease-out); will-change: transform; }
-.tilt .media > img, .tilt .media > svg { transform: scale(1.1) translate(calc(var(--tx) * -3%), calc(var(--ty) * -3%)); transition: transform 0.9s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .tilt .media { transform: perspective(1100px) rotateY(calc(var(--tx) * 8deg)) rotateX(calc(var(--ty) * -8deg)); transition: transform 0.7s var(--ease-out), clip-path 1.2s var(--ease-out); }
+  .tilt .media > img, .tilt .media > svg { transform: scale(1.1) translate(calc(var(--tx) * -3%), calc(var(--ty) * -3%)); transition: transform 0.9s var(--ease-out); }
+  .js .tilt .curtain.in > img, .js .tilt .curtain.in > svg { transform: scale(1.1) translate(calc(var(--tx) * -3%), calc(var(--ty) * -3%)); }
+}
 .tilt .media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at calc(50% + var(--tx) * 100%) calc(50% + var(--ty) * 100%), rgba(255, 255, 255, 0.16), transparent 55%); opacity: 0; transition: opacity 0.4s; }
 .tilt:hover .media::after { opacity: 1; }
 
@@ -267,7 +270,6 @@ figcaption { display: flex; justify-content: space-between; gap: 16px; padding-t
 .js .curtain.in { clip-path: inset(0); }
 .js .curtain > img, .js .curtain > svg { transform: scale(1.28); transition: transform 1.6s var(--ease-out); }
 .js .curtain.in > img, .js .curtain.in > svg { transform: scale(1.001); }
-.js .tilt .curtain.in > img, .js .tilt .curtain.in > svg { transform: scale(1.1) translate(calc(var(--tx) * -3%), calc(var(--ty) * -3%)); }
 
 /* first-screen items arrive after the heading */
 .js .rise { opacity: 0; transform: translateY(18px); }
@@ -356,6 +358,24 @@ figcaption { display: flex; justify-content: space-between; gap: 16px; padding-t
 .walk-count { min-width: 5.5em; }
 .walk-bar { flex: 1; height: 1px; background: var(--line); }
 .walk-bar i { display: block; height: 1px; background: var(--brass); transform-origin: 0 50%; transform: scaleX(0); }
+/* phones and tablets: swipe sideways through the projects (main.js adds .swipe) */
+.walk.swipe { padding: clamp(64px, 12vw, 110px) 0 clamp(48px, 9vw, 80px); }
+.walk.swipe .walk-sticky { position: static; height: auto; overflow: visible; }
+.walk.swipe .walk-head { padding-top: 0; margin-bottom: 26px; }
+.walk.swipe .walk-stage { perspective: none; flex: none; }
+.walk.swipe .walk-world { position: static; display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); padding: 0 var(--gutter) 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.walk.swipe .walk-world::-webkit-scrollbar { display: none; }
+.walk.swipe .walk-card { position: static; flex: 0 0 min(84vw, 520px); width: auto; margin: 0; scroll-snap-align: start; will-change: auto; }
+.walk.swipe .walk-card .media { box-shadow: none; }
+.walk.swipe .walk-card .media.drawn > img, .walk.swipe .walk-card .sketch { transition: opacity 0.9s var(--ease); }
+.walk.swipe .walk-card .media.drawn > img { opacity: 0; }
+.walk.swipe .walk-card .sketch { opacity: 1; }
+.walk.swipe .walk-card .media.photo > img { opacity: 1; }
+.walk.swipe .walk-card .media.photo > .sketch { opacity: 0; }
+.walk.swipe .walk-info h3 { font-size: 24px; }
+.walk.swipe .walk-end { align-self: flex-start; font-size: 28px; }
+.walk.swipe .walk-floor { display: none; }
+.walk.swipe .walk-foot { padding: 22px var(--gutter) 0; }
 /* no 3D (reduced motion): a plain row */
 .walk.flat { padding: clamp(72px, 10vw, 150px) 0; }
 .walk.flat .walk-sticky { position: static; height: auto; overflow: visible; }
@@ -588,8 +608,6 @@ a.index-row:hover .t { transform: translateX(14px); color: var(--accent); }
   .hero-sticky { justify-content: flex-end; padding-bottom: 84px; }
   .hero .model { --model-shift: 0; --model-rise: 0.2; }
   .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: none; }
-  .hero-copy { text-shadow: 0 0 22px var(--bg), 0 0 8px var(--bg); }
-  .hero-copy .btn { text-shadow: none; }
   .kicker { margin-bottom: 14px; font-size: 14px; }
   .hero-actions { margin-top: 20px; }
   .hero-actions .btn { padding: 12px 18px; }
@@ -602,6 +620,7 @@ a.index-row:hover .t { transform: translateX(14px); color: var(--accent); }
   .stat + .stat { padding-left: 14px; }
   .stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .scrolled .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); }
   .walk-sticky { --cw: min(86vw, (100svh - 290px) * 1.5); }
   .walk-stage { perspective: 1700px; }
   .walk-head h2 { font-size: 24px; }
